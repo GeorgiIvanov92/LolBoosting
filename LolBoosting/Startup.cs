@@ -11,6 +11,7 @@ using LolBoosting.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
 namespace LolBoosting
 {
@@ -31,7 +32,7 @@ namespace LolBoosting
                     Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<LolBoostingDbContext>();
+                .AddRoles<IdentityRole>().AddEntityFrameworkStores<LolBoostingDbContext>();
 
             services.AddIdentityServer()
                 .AddApiAuthorization<User, LolBoostingDbContext>();
@@ -41,6 +42,11 @@ namespace LolBoosting
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -67,6 +73,13 @@ namespace LolBoosting
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+            });
 
             app.UseRouting();
 
