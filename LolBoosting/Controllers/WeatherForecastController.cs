@@ -29,9 +29,9 @@ namespace LolBoosting.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin")]
         public IEnumerable<WeatherForecast> Get()
         {
-            var a = User.IsInRole("Client");
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

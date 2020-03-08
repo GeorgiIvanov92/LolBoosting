@@ -17,5 +17,20 @@ namespace LolBoosting.Data
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
         {
         }
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<User>()
+                .HasMany(a => a.Orders)
+                .WithOne(a => a.Booster)
+                .IsRequired();
+
+            builder.Entity<User>()
+                .HasMany(a => a.Orders)
+                .WithOne(a => a.Client)
+                .IsRequired();
+        }
     }
 }

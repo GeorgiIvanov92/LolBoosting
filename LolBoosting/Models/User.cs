@@ -8,6 +8,9 @@ namespace LolBoosting.Models
 {
     public class User : IdentityUser
     {
-        public IdentityRole Role  { get; set; }
+        public decimal Balance { get; set; }
+        public double Winrate { get; set; }
+        public byte[] ImageData { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }
