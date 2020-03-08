@@ -4,14 +4,16 @@ using LolBoosting.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LolBoosting.Data.Migrations
 {
     [DbContext(typeof(LolBoostingDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200308135013_new order entity")]
+    partial class neworderentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -123,6 +125,14 @@ namespace LolBoosting.Data.Migrations
                     b.Property<decimal>("BoosterEarningsPerWin")
                         .HasColumnType("decimal(5,2)");
 
+                    b.Property<string>("BoosterId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ClientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<int>("CurrentDivision")
                         .HasColumnType("int");
 
@@ -162,9 +172,18 @@ namespace LolBoosting.Data.Migrations
                     b.Property<int>("StartingTier")
                         .HasColumnType("int");
 
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("OrderId");
 
-                    b.ToTable("Orders");
+                    b.HasIndex("BoosterId");
+
+                    b.HasIndex("ClientId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("LolBoosting.Models.User", b =>
@@ -239,21 +258,6 @@ namespace LolBoosting.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("LolBoosting.Models.UserOrder", b =>
-                {
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("OrderId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserOrders");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -391,19 +395,23 @@ namespace LolBoosting.Data.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("LolBoosting.Models.UserOrder", b =>
+            modelBuilder.Entity("LolBoosting.Models.Order", b =>
                 {
-                    b.HasOne("LolBoosting.Models.Order", "Order")
-                        .WithMany("UserOrders")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("LolBoosting.Models.User", "Booster")
+                        .WithMany()
+                        .HasForeignKey("BoosterId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("LolBoosting.Models.User", "User")
-                        .WithMany("UserOrders")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("LolBoosting.Models.User", "Client")
+                        .WithMany()
+                        .HasForeignKey("ClientId")
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.HasOne("LolBoosting.Models.User", null)
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

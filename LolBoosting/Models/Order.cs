@@ -9,7 +9,6 @@ namespace LolBoosting.Models
     public class Order
     {
         public int OrderId { get; set; }
-        public string ClientId { get; set; }
         public string AccountUsername { get; set; }
         public string AccountPassword { get; set; }
         public OrderType OrderType { get; set; }
@@ -27,9 +26,7 @@ namespace LolBoosting.Models
         public int DesiredLP { get; set; }
         public int PurchasedGames { get; set; }
         public int RemainingGames { get; set; }
-        public User Client { get; set; }
-        public string BoosterId { get; set; }
-        public User Booster { get; set; }
+        public virtual ICollection<UserOrder> UserOrders { get; set; }
         public OrderStatus OrderStatus { get; set; }
     }
 }
