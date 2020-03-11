@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LoLBoosting.Constants\LoLBoosting.Constants.csproj" />
     <ProjectReference Include="..\LoLBoosting.Models\LoLBoosting.Models.csproj" />
-    <ProjectReference Include="..\LolBoostingConstants\LolBoostingConstants.csproj" />
   </ItemGroup>
 
 </Project>

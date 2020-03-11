@@ -8,7 +8,7 @@ using Microsoft.Extensions.Options;
 namespace LolBoosting.Data.Context
 {
     public class LolBoostingDbContext : ApiAuthorizationDbContext<User>
-    {       
+    {
         public LolBoostingDbContext(
             DbContextOptions options,
             IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
@@ -17,13 +17,18 @@ namespace LolBoosting.Data.Context
 
         public DbSet<Order> Orders { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            base.OnConfiguring(optionsBuilder);
+        }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
+            builder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
+
             builder.ApplyConfiguration(new OrderEntityTypeConfiguration());
-
-
 
             //builder.Entity<User>()
             //    .Property(p => p.Balance)
