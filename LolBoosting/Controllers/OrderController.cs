@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using LolBoosting.Data;
+﻿using System.Threading.Tasks;
+using LolBoosting.Data.Context;
 using LolBoosting.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace LolBoosting.Controllers
 {
@@ -34,9 +30,8 @@ namespace LolBoosting.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
         [Authorize(Roles = "Client,Administrator")]
-        [Route("zdr")]
+        [Route("GetOrder")]
         public Order GetOrderById(int id)
         {
             return _boostingDbContext.Orders.Find(id);

@@ -1,0 +1,8 @@
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Contracts\bin\Debug\netstandard2.0\LoLBoosting.Contracts.deps.json
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Contracts\bin\Debug\netstandard2.0\LoLBoosting.Contracts.dll
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Contracts\bin\Debug\netstandard2.0\LoLBoosting.Contracts.pdb
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Contracts\obj\Debug\netstandard2.0\LoLBoosting.Contracts.csprojAssemblyReference.cache
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Contracts\obj\Debug\netstandard2.0\LoLBoosting.Contracts.AssemblyInfoInputs.cache
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Contracts\obj\Debug\netstandard2.0\LoLBoosting.Contracts.AssemblyInfo.cs
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Contracts\obj\Debug\netstandard2.0\LoLBoosting.Contracts.dll
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Contracts\obj\Debug\netstandard2.0\LoLBoosting.Contracts.pdb

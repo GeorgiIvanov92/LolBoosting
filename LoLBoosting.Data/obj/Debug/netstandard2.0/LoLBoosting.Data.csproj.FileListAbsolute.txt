@@ -1,0 +1,4 @@
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Data\bin\Debug\netstandard2.0\LoLBoosting.Data.deps.json
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Data\bin\Debug\netstandard2.0\LoLBoosting.Data.dll
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Data\obj\Debug\netstandard2.0\LoLBoosting.Data.AssemblyInfoInputs.cache
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Data\obj\Debug\netstandard2.0\LoLBoosting.Data.AssemblyInfo.cs

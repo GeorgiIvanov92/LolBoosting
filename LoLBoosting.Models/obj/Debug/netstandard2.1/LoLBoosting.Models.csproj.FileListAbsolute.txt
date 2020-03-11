@@ -1,0 +1,11 @@
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\bin\Debug\netstandard2.1\LoLBoosting.Models.deps.json
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\bin\Debug\netstandard2.1\LoLBoosting.Models.dll
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\bin\Debug\netstandard2.1\LoLBoosting.Contracts.dll
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\bin\Debug\netstandard2.1\LoLBoosting.Contracts.pdb
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\obj\Debug\netstandard2.1\LoLBoosting.Models.csprojAssemblyReference.cache
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\obj\Debug\netstandard2.1\LoLBoosting.Models.AssemblyInfoInputs.cache
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\obj\Debug\netstandard2.1\LoLBoosting.Models.AssemblyInfo.cs
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\obj\Debug\netstandard2.1\LoLBoosting.Models.csproj.CopyComplete
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\bin\Debug\netstandard2.1\LoLBoosting.Models.pdb
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\obj\Debug\netstandard2.1\LoLBoosting.Models.dll
+C:\Users\mariyan.t\source\repos\LolBoosting\LoLBoosting.Models\obj\Debug\netstandard2.1\LoLBoosting.Models.pdb
