@@ -26,6 +26,7 @@ namespace LoLBoosting.Data.Seeding
             var seeders = new List<ISeeder>
                           {
                               new RolesSeeder(),
+                              new UsersSeeder(),
                           };
 
             foreach (var seeder in seeders)

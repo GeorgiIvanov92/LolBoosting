@@ -15,10 +15,10 @@ namespace LoLBoosting.Data.Seeding
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             var roles = new string[] { "Administrator", "Client", "Booster" };
-            await SeedRoleAsync(roleManager, roles);
+            await SeedRolesAsync(roleManager, roles);
         }
 
-        private async Task SeedRoleAsync(RoleManager<IdentityRole> roleManager, ICollection<string> roleNames)
+        private async Task SeedRolesAsync(RoleManager<IdentityRole> roleManager, ICollection<string> roleNames)
         {
             foreach (var roleName in roleNames)
             {
