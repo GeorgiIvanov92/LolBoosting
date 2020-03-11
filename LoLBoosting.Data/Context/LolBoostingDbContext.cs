@@ -29,12 +29,7 @@ namespace LolBoosting.Data.Context
             builder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
 
             builder.ApplyConfiguration(new OrderEntityTypeConfiguration());
-
-            //builder.Entity<User>()
-            //    .Property(p => p.Balance)
-            //    .HasColumnType("decimal(5,2)");
-
-            //builder.Entity<User>().Property(p => p.ImageData).IsRequired(false);
+            builder.ApplyConfiguration(new UserEntityTypeConfiguration());
         }
     }
 }

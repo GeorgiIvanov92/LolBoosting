@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using LolBoosting.Models;
+using LolBoosting.Infrastructure.Extensions.ServiceCollection;
 
 namespace LolBoosting
 {
@@ -31,7 +32,7 @@ namespace LolBoosting
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.RegisterServices(Configuration);
 
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()

@@ -7,7 +7,7 @@ namespace LolBoosting.Infrastructure.Extensions.ServiceCollection
     {
         public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
-            
+            services.RegisterContext(configuration);
 
             return services;
         }
