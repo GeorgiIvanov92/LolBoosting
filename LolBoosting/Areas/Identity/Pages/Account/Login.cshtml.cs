@@ -44,6 +44,7 @@ namespace LolBoosting.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
+            [Display(Name = "User Name")]
             public string UserName { get; set; }
 
             [Required]

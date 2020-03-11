@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
 using LolBoosting.Data.Context;
+using LolBoosting.Extensions;
 using LolBoosting.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LolBoosting.Controllers
@@ -12,9 +14,11 @@ namespace LolBoosting.Controllers
     public class OrderController : ControllerBase
     {
         private LolBoostingDbContext _boostingDbContext;
-        public OrderController(LolBoostingDbContext dbContext)
+        private UserManager<User> _userManager;
+        public OrderController(LolBoostingDbContext dbContext, UserManager<User> userManager)
         {
             _boostingDbContext = dbContext;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -25,15 +29,20 @@ namespace LolBoosting.Controllers
         {
             if (ModelState.IsValid)
             {
-                //TODO: create mapping orderId -> order
-                var order = new Order();
+                var order = orderIn.ToOrder();
+                var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
+                order.CustomerId = user.Id;
+                order.OrderStatus = Contracts.Orders.EOrderStatus.WaitingVerification;
 
-                //TODO: change to repository 
                 _boostingDbContext.Orders.Add(order);
                 await _boostingDbContext.SaveChangesAsync();
 
-                //TODO: create mapping order -> orderOut
-                var orderOut = new OrderOut();
+                var orderOut = new OrderOut
+                {
+                    ClientId = order.Customer.Id,
+                    AccountUsername = order.AccountUsername,
+                    AccountPassword = order.AccountPassword
+                };
 
                 return Created($"{ControllerContext.ActionDescriptor.ControllerName}/{order.OrderId}", orderOut);
             }
@@ -42,7 +51,7 @@ namespace LolBoosting.Controllers
         }
 
         [HttpGet]
-        [Route("{orderId}")]
+        [Route("{id}")]
         [Authorize(Roles = "Client,Administrator")]
         [ProducesResponseType(typeof(OrderOut), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrder(int id)
@@ -57,14 +66,15 @@ namespace LolBoosting.Controllers
 
         public class OrderIn
         {
-            public User Client { get; set; }
-            public Order Order { get; set; }
+            public string AccountUsername { get; set; }
+            public string AccountPassword { get; set; }
         }
 
         public class OrderOut 
         {
-            public User Client { get; set; }
-            public Order Order { get; set; }
+            public string ClientId { get; set; }
+            public string AccountUsername { get; set; }
+            public string AccountPassword { get; set; }
         }
     }
 }

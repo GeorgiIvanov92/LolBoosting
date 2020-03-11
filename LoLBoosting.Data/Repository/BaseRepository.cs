@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LoLBoosting.Contracts;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -19,42 +20,44 @@ namespace LoLBoosting.Data.Repository
 
         public void Add(T newEntity)
         {
-            throw new NotImplementedException();
+            _set.Add(newEntity);
         }
 
         public void Delete(T entity)
         {
-            throw new NotImplementedException();
+            _set.Remove(entity);
         }
 
         public T Find(object id)
         {
-            throw new NotImplementedException();
+            // return _set.FirstOrDefault<T>(a => a.Id == id);
+            throw new Exception("Mariqn will fix this");
         }
 
         public Task<T> FindAsync(object id)
         {
-            throw new NotImplementedException();
+            //return _set.FirstOrDefaultAsync<T>(a => a.Id == id);
+            throw new Exception("Mariqn will fix this");
         }
 
         public IQueryable<T> GetAll()
         {
-            throw new NotImplementedException();
+            return _set.AsQueryable();
         }
 
         public void Save()
         {
-            throw new NotImplementedException();
+            _context.SaveChanges();
         }
 
         public Task SaveChangesAsync()
         {
-            throw new NotImplementedException();
+            return _context.SaveChangesAsync();
         }
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            _set.Update(entity);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using LolBoosting.Contracts.Orders;
+using LoLBoosting.Contracts;
 using System.Collections.Generic;
 
 namespace LolBoosting.Models

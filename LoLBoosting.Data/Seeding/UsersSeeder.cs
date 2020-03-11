@@ -17,11 +17,9 @@ namespace LoLBoosting.Data.Seeding
         {
             var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
 
-            if (!dbContext.Users.Any())
-            {
                 await SeedAdminAsync(userManager);
                 await SeedClientsAsync(userManager, GenerateUsers(SeederConstants.ClientsToSeed));
-            }
+            
         }
 
         private async Task SeedAdminAsync(UserManager<User> userManager)
@@ -48,10 +46,10 @@ namespace LoLBoosting.Data.Seeding
 
                 if (user == null)
                 {
-                    var identityResult = await userManager.CreateAsync(user, SeederConstants.SeederUserPassword);
+                    var identityResult = await userManager.CreateAsync(newUser, SeederConstants.SeederUserPassword);
                     if (identityResult.Succeeded)
                     {
-                        await userManager.AddToRoleAsync(user, GlobalConstants.DefaultRole);
+                        await userManager.AddToRoleAsync(newUser, GlobalConstants.DefaultRole);
                     }
                 }
             }
