@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Threading.Tasks;
-using LolBoosting.Data.Context;
+using LoLBoosting.Data.Repository;
 using LolBoosting.Extensions;
 using LolBoosting.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -13,11 +13,12 @@ namespace LolBoosting.Controllers
     [Route("[controller]")]
     public class OrderController : ControllerBase
     {
-        private LolBoostingDbContext _boostingDbContext;
+        private IRepository<Order> _orderRepository;
         private UserManager<User> _userManager;
-        public OrderController(LolBoostingDbContext dbContext, UserManager<User> userManager)
+
+        public OrderController(IRepository<Order> orderRepositpory, UserManager<User> userManager)
         {
-            _boostingDbContext = dbContext;
+            _orderRepository = orderRepositpory;
             _userManager = userManager;
         }
 
@@ -34,8 +35,8 @@ namespace LolBoosting.Controllers
                 order.CustomerId = user.Id;
                 order.OrderStatus = Contracts.Orders.EOrderStatus.WaitingVerification;
 
-                _boostingDbContext.Orders.Add(order);
-                await _boostingDbContext.SaveChangesAsync();
+                _orderRepository.Add(order);
+                await _orderRepository.SaveChangesAsync();
 
                 var orderOut = new OrderOut
                 {
@@ -56,7 +57,7 @@ namespace LolBoosting.Controllers
         [ProducesResponseType(typeof(OrderOut), (int)HttpStatusCode.OK)]
         public async Task<IActionResult> GetOrder(int id)
         {
-            var order = _boostingDbContext.Orders.Find(id);
+            var order = _orderRepository.Find(id);
 
             //TODO: create mapping order -> orderOut
             var orderOut = new OrderOut();

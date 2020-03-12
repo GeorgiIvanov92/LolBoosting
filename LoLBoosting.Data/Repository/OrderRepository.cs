@@ -3,9 +3,9 @@ using LolBoosting.Models;
 
 namespace LoLBoosting.Data.Repository
 {
-    public class UserRepository : BaseRepository<User>
+    public class OrderRepository : BaseRepository<Order>
     {
-        public UserRepository(LolBoostingDbContext context) : base(context)
+        public OrderRepository(LolBoostingDbContext context) : base(context)
         {
 
         }

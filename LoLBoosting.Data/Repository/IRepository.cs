@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace LoLBoosting.Data.Repository
 {
-    interface IRepository<T>
+    public interface IRepository<T>
     {
         IQueryable<T> GetAll();
 

@@ -16,6 +16,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using LolBoosting.Models;
 using LolBoosting.Infrastructure.Extensions.ServiceCollection;
+using LoLBoosting.Data.Repository;
 
 namespace LolBoosting
 {
@@ -33,6 +34,9 @@ namespace LolBoosting
         public void ConfigureServices(IServiceCollection services)
         {
             services.RegisterServices(Configuration);
+
+            services.AddScoped<IRepository<Order>, OrderRepository>();
+            //services.AddScoped(typeof(IRepository<>), typeof(OrderRepository));
 
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()

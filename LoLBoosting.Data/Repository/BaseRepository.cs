@@ -1,6 +1,5 @@
-﻿using LoLBoosting.Contracts;
+﻿using LolBoosting.Data.Context;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,10 +11,25 @@ namespace LoLBoosting.Data.Repository
         private DbContext _context;
         private DbSet<T> _set;
 
-        public BaseRepository(DbContext dbContext)
+        public BaseRepository(LolBoostingDbContext dbContext)
         {
             _context = dbContext;
             _set = _context.Set<T>();
+        }
+
+        public IQueryable<T> GetAll()
+        {
+            return _set.AsQueryable();
+        }
+
+        public T Find(object id)
+        {
+            return _set.Find(id);
+        }
+
+        public async Task<T> FindAsync(object id)
+        {
+            return await _set.FindAsync(id);
         }
 
         public void Add(T newEntity)
@@ -23,26 +37,14 @@ namespace LoLBoosting.Data.Repository
             _set.Add(newEntity);
         }
 
+        public void Update(T entity)
+        {
+            _set.Update(entity);
+        }
+
         public void Delete(T entity)
         {
             _set.Remove(entity);
-        }
-
-        public T Find(object id)
-        {
-            // return _set.FirstOrDefault<T>(a => a.Id == id);
-            throw new Exception("Mariqn will fix this");
-        }
-
-        public Task<T> FindAsync(object id)
-        {
-            //return _set.FirstOrDefaultAsync<T>(a => a.Id == id);
-            throw new Exception("Mariqn will fix this");
-        }
-
-        public IQueryable<T> GetAll()
-        {
-            return _set.AsQueryable();
         }
 
         public void Save()
@@ -53,11 +55,6 @@ namespace LoLBoosting.Data.Repository
         public Task SaveChangesAsync()
         {
             return _context.SaveChangesAsync();
-        }
-
-        public void Update(T entity)
-        {
-            _set.Update(entity);
         }
     }
 }
