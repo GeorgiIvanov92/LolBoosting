@@ -6,6 +6,7 @@ using LolBoosting.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using LolBoosting.Contracts.Orders;
 
 namespace LolBoosting.Controllers
 {
@@ -22,7 +23,32 @@ namespace LolBoosting.Controllers
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("{id}")]
+        [Authorize(Roles = "Client,Administrator")]
+        [ProducesResponseType(typeof(OrderOut), (int)HttpStatusCode.OK)]
+        public async Task<IActionResult> GetOrder(int id)
+        {
+            var order = _orderRepository.Find(id);
+
+            //TODO: create mapping order -> orderOut
+            var orderOut = new OrderOut();
+
+            return Ok(orderOut);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="orderIn"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Route("Create")]
         [Authorize(Roles = "Client,Administrator")]
         [ProducesResponseType(typeof(OrderOut), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
@@ -33,7 +59,7 @@ namespace LolBoosting.Controllers
                 var order = orderIn.ToOrder();
                 var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
                 order.CustomerId = user.Id;
-                order.OrderStatus = Contracts.Orders.EOrderStatus.WaitingVerification;
+                order.OrderStatus = EOrderStatus.WaitingVerification;
 
                 _orderRepository.Add(order);
                 await _orderRepository.SaveChangesAsync();
@@ -51,18 +77,41 @@ namespace LolBoosting.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
-        [Route("{id}")]
-        [Authorize(Roles = "Client,Administrator")]
-        [ProducesResponseType(typeof(OrderOut), (int)HttpStatusCode.OK)]
-        public async Task<IActionResult> GetOrder(int id)
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="boosterName"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Assign")]
+        [Authorize(Roles = "Booster,Administrator")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> AssignOrder(int id, string? boosterName)
         {
             var order = _orderRepository.Find(id);
+            var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
 
-            //TODO: create mapping order -> orderOut
-            var orderOut = new OrderOut();
+            if (order.OrderStatus.Equals(EOrderStatus.WaitingForBooster))
+            {
+                if (User.IsInRole("Administrator")
+                    && !string.IsNullOrWhiteSpace(boosterName))
+                {
+                    user = await _userManager.FindByNameAsync(boosterName);
+                }
 
-            return Ok(orderOut);
+                order.BoosterId = user.Id;
+                order.OrderStatus = EOrderStatus.ClaimedByBooster;
+
+                _orderRepository.Update(order);
+                await _orderRepository.SaveChangesAsync();
+
+                return Ok();
+            }
+
+            return BadRequest("Sorry. Order cannot be assigned.");
         }
 
         public class OrderIn
@@ -71,7 +120,7 @@ namespace LolBoosting.Controllers
             public string AccountPassword { get; set; }
         }
 
-        public class OrderOut 
+        public class OrderOut
         {
             public string ClientId { get; set; }
             public string AccountUsername { get; set; }
