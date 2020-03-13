@@ -1,9 +1,11 @@
 ﻿using LolBoosting.Contracts.Orders;
+using LoLBoosting.Contracts.Models;
+using System;
 using System.Collections.Generic;
 
 namespace LolBoosting.Models
 {
-    public class Order
+    public class Order : IDeletableEntity
     {
         public int OrderId { get; set; }
         public string AccountUsername { get; set; }
@@ -30,5 +32,9 @@ namespace LolBoosting.Models
         public virtual User Booster { get; set; }
 
         public EOrderStatus OrderStatus { get; set; }
+
+        //Deleteble
+        public bool IsDeleted { get; set; }
+        public DateTime? DeletedOn { get; set; }
     }
 }

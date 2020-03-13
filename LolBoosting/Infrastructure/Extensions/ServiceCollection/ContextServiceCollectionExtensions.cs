@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using static LolBoosting.Constants.ApiConstants;
+using static LoLBoosting.Constants.ApiConstants;
 
 namespace LolBoosting.Infrastructure.Extensions.ServiceCollection
 {

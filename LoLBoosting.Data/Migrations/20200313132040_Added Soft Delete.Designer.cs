@@ -4,14 +4,16 @@ using LolBoosting.Data.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace LoLBoosting.Data.Migrations
 {
     [DbContext(typeof(LolBoostingDbContext))]
-    partial class LolBoostingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200313132040_Added Soft Delete")]
+    partial class AddedSoftDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

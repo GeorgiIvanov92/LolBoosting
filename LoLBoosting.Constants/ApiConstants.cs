@@ -1,4 +1,4 @@
-﻿namespace LolBoosting.Constants
+﻿namespace LoLBoosting.Constants
 {
     public class ApiConstants
     {

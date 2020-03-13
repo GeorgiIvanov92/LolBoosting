@@ -35,7 +35,7 @@ namespace LolBoosting
         {
             services.RegisterServices(Configuration);
 
-            services.AddScoped<IRepository<Order>, OrderRepository>();
+            services.AddScoped<IDeletebleEntityRepository<Order>, DeletableEntityRepository<Order>>();
             //services.AddScoped(typeof(IRepository<>), typeof(OrderRepository));
 
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
