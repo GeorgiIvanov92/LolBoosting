@@ -15,6 +15,7 @@ using LoLBoosting.Data.Seeding;
 using LoLBoosting.Models;
 using LoLBoosting.Data.Repository;
 using LolBoosting.WebApi.Infrastructure.Extensions.ServiceCollection;
+using LoLBoosting.WebApi.Communication.Http;
 
 namespace LolBoosting
 {
@@ -53,6 +54,8 @@ namespace LolBoosting
 
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddHttpClient<RiotApiClient>();
 
             services.AddSwaggerGen(c =>
             {
