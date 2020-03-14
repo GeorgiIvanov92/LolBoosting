@@ -13,10 +13,11 @@ namespace LoLBoosting.RiotApi.Controllers
     public class SummonerController : ControllerBase
     {
         [HttpPost]
-        public Task<bool> ValidateSummoner([FromBody] Summoner summoner)
+        public Task<Summoner> GetSummonerDetails(string summonerName)
         {
+            var result = new Summoner();
 
-            return Task.FromResult(true);
+            return Task.FromResult(result);
         }
     }
 }

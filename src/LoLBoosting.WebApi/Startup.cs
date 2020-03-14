@@ -37,6 +37,9 @@ namespace LolBoosting
             services.AddScoped<IDeletebleEntityRepository<Order>, DeletableEntityRepository<Order>>();
             //services.AddScoped(typeof(IRepository<>), typeof(OrderRepository));
 
+            services.AddHttpClient<RiotApiClient>();
+            //services.AddSingleton<RiotApiClient>();
+
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
@@ -55,7 +58,7 @@ namespace LolBoosting
             services.AddControllersWithViews();
             services.AddRazorPages();
 
-            services.AddHttpClient<RiotApiClient>();
+
 
             services.AddSwaggerGen(c =>
             {

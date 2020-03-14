@@ -7,6 +7,8 @@ using LoLBoosting.Data.Repository;
 using LoLBoosting.WebApi.Extensions;
 using LoLBoosting.Models;
 using LoLBoosting.Contracts.Models;
+using LoLBoosting.WebApi.Communication.Http;
+using LoLBoosting.Contracts.Orders;
 
 namespace LoLBoosting.WebApi.Controllers
 {
@@ -16,11 +18,13 @@ namespace LoLBoosting.WebApi.Controllers
     {
         private IRepository<Order> _orderRepository;
         private UserManager<User> _userManager;
+        private readonly RiotApiClient _riotApiClient;
 
-        public OrderController(IRepository<Order> orderRepositpory, UserManager<User> userManager)
+        public OrderController(IDeletebleEntityRepository<Order> orderRepositpory, UserManager<User> userManager, RiotApiClient riotApiClient)
         {
             _orderRepository = orderRepositpory;
             _userManager = userManager;
+            _riotApiClient = riotApiClient;
         }
 
         /// <summary>
@@ -56,6 +60,8 @@ namespace LoLBoosting.WebApi.Controllers
         {
             if (ModelState.IsValid)
             {
+                var summoner = await _riotApiClient.GetSummonerDetailsAsync(orderIn.AccountUsername, orderIn.SummonerServer);
+
                 var order = orderIn.ToOrder();
                 var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
                 order.CustomerId = user.Id;
@@ -118,6 +124,7 @@ namespace LoLBoosting.WebApi.Controllers
         {
             public string AccountUsername { get; set; }
             public string AccountPassword { get; set; }
+            public EServer SummonerServer { get; set; }
         }
 
         public class OrderOut

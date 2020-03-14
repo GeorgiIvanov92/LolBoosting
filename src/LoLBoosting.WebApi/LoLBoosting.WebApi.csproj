@@ -36,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LoLBoosting.Common\LoLBoosting.Common.csproj" />
     <ProjectReference Include="..\LoLBoosting.Constants\LoLBoosting.Constants.csproj" />
     <ProjectReference Include="..\LoLBoosting.Contracts\LoLBoosting.Contracts.csproj" />
     <ProjectReference Include="..\LoLBoosting.Data\LoLBoosting.Data.csproj" />
