@@ -2,13 +2,13 @@
 using System.Threading.Tasks;
 using LoLBoosting.Data.Repository;
 using LolBoosting.Extensions;
-using LolBoosting.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using LolBoosting.Contracts.Orders;
+using LolBoosting.Models;
 
-namespace LolBoosting.Controllers
+namespace LolBoostingWebApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]

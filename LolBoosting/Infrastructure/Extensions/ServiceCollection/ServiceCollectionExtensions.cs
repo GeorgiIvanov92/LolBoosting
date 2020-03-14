@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LolBoosting.Infrastructure.Extensions.ServiceCollection
+namespace LolBoostingWebApi.Infrastructure.Extensions.ServiceCollection
 {
     public static class ServiceCollectionExtensions
     {

@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using static LolBoosting.Controllers.OrderController;
+using LolBoostingWebApi.Controllers;
 
 namespace LolBoosting.Extensions
 {
     public static class OrderInExtensions
     {
-        public static Order ToOrder(this OrderIn orderIn)
+        public static Order ToOrder(this OrderController.OrderIn orderIn)
         {
             return new Order
             {

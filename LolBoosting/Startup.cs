@@ -15,8 +15,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using LolBoosting.Models;
-using LolBoosting.Infrastructure.Extensions.ServiceCollection;
 using LoLBoosting.Data.Repository;
+using LolBoostingWebApi.Infrastructure.Extensions.ServiceCollection;
 
 namespace LolBoosting
 {

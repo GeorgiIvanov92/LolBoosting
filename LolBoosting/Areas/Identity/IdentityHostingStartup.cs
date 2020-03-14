@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-[assembly: HostingStartup(typeof(LolBoosting.Areas.Identity.IdentityHostingStartup))]
-namespace LolBoosting.Areas.Identity
+[assembly: HostingStartup(typeof(LolBoostingWebApi.Areas.Identity.IdentityHostingStartup))]
+namespace LolBoostingWebApi.Areas.Identity
 {
     public class IdentityHostingStartup : IHostingStartup
     {

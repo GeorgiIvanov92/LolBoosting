@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace LolBoosting.Data.Migrations
+namespace LolBoostingWebApi.Data.Migrations
 {
     public partial class minorchange2 : Migration
     {

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace LolBoosting.Controllers
+namespace LolBoostingWebApi.Controllers
 {
     public class OidcConfigurationController : Controller
     {

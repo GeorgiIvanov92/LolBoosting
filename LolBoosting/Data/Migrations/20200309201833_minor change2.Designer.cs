@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace LolBoosting.Data.Migrations
+namespace LolBoostingWebApi.Data.Migrations
 {
     [DbContext(typeof(LolBoostingDbContext))]
     [Migration("20200309201833_minor change2")]

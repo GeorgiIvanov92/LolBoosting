@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using static LoLBoosting.Constants.ApiConstants;
 
-namespace LolBoosting.Infrastructure.Extensions.ServiceCollection
+namespace LolBoostingWebApi.Infrastructure.Extensions.ServiceCollection
 {
     public static class ContextServiceCollectionExtensions
     {
