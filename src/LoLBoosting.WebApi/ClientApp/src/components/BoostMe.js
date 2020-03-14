@@ -3,6 +3,7 @@ import authService from './api-authorization/AuthorizeService'
 import { Col, Form, InputGroup, Button } from 'react-bootstrap';
 import { Formik, Field, Feedback } from 'formik';
 import * as yup from 'yup';
+import { OrderSpecific } from "./OrderSpecific";
 
 export class BoostMe extends Component {
     static displayName = BoostMe.name;
@@ -13,15 +14,19 @@ export class BoostMe extends Component {
             forecasts: [],
             loading: true,
             schema: yup.object({
-                username: yup.string().min(4, 'Too Short!').max(30, 'Too Long!').required('Required!'),
-                password: yup.string().required(),
-                nickname: yup.string().required('InGame Username is required!'),
+                username: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
+                password: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
+                nickname: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
                 server: yup.string().required('Server is required!'),
-                terms: yup.bool().required()
             })
         }
 
         this.FormExample = this.FormExample.bind(this);
+        this.RenderOrderSpecifics = this.RenderOrderSpecifics.bind(this);
+    }
+
+    RenderOrderSpecifics(orderType) {
+        return <OrderSpecific orderType={orderType}/>
     }
 
     FormExample() {
@@ -74,7 +79,13 @@ export class BoostMe extends Component {
                                 />
 
                                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.password}
+                                </Form.Control.Feedback>
                             </Form.Group>
+
+                        </Form.Row>
+                        <Form.Row>
                             <Form.Group as={Col} md="4" controlId="validationFormik03">
                                 <Form.Label>InGame Username</Form.Label>
                                 <Form.Control
@@ -86,6 +97,9 @@ export class BoostMe extends Component {
                                 />
 
                                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.nickname}
+                                </Form.Control.Feedback>
                             </Form.Group>
 
                             <Form.Group as={Col} md="4" controlId="validationFormik04">
@@ -108,52 +122,7 @@ export class BoostMe extends Component {
 
                                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                             </Form.Group>
-                        </Form.Row>
-                        <Form.Row>
-                            <Form.Group as={Col} md="6" controlId="validationFormik04">
-                                <Form.Label>City</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="City"
-                                    name="city"
-                                    value={values.city}
-                                    onChange={handleChange}
-                                    isInvalid={!!errors.city}
-                                />
-
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.city}
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group as={Col} md="3" controlId="validationFormik05">
-                                <Form.Label>State</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="State"
-                                    name="state"
-                                    value={values.state}
-                                    onChange={handleChange}
-                                    isInvalid={!!errors.state}
-                                />
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.state}
-                                </Form.Control.Feedback>
-                            </Form.Group>
-                            <Form.Group as={Col} md="3" controlId="validationFormik06">
-                                <Form.Label>Zip</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    placeholder="Zip"
-                                    name="zip"
-                                    value={values.zip}
-                                    onChange={handleChange}
-                                    isInvalid={!!errors.zip}
-                                />
-
-                                <Form.Control.Feedback type="invalid">
-                                    {errors.zip}
-                                </Form.Control.Feedback>
-                            </Form.Group>
+                            {this.RenderOrderSpecifics("SoloQueueWins")}
                         </Form.Row>
 
                         <Button type="submit">Proceed to Payment</Button>
