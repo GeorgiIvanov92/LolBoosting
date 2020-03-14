@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29806.167
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoLBoosting.Models", "src\LoLBoosting.Models\LoLBoosting.Models.csproj", "{DFB334F1-1DBD-482C-A65A-BC13626B8562}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoLBoosting.Entities", "src\LoLBoosting.Models\LoLBoosting.Entities.csproj", "{DFB334F1-1DBD-482C-A65A-BC13626B8562}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoLBoosting.Contracts", "src\LoLBoosting.Contracts\LoLBoosting.Contracts.csproj", "{5A206DB4-99D8-48AE-8426-9B643AFDC4FF}"
 EndProject
@@ -15,9 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoLBoosting.WebApi", "src\L
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{6D5DA82E-ADD1-44E7-AF8B-E5D813DB747A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoLBoosting.RiotApi", "src\LoLBoosting.RiotApi\LoLBoosting.RiotApi.csproj", "{37ACDFBE-5D24-46B7-A359-0BFE96B9CB40}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoLBoosting.Common", "src\LoLBoosting.Common\LoLBoosting.Common.csproj", "{27E710F6-95F9-495F-81A5-275176FFA36C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LoLBoosting.RiotApi", "src\LoLBoosting.RiotApi\LoLBoosting.RiotApi.csproj", "{37ACDFBE-5D24-46B7-A359-0BFE96B9CB40}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,10 +47,6 @@ Global
 		{37ACDFBE-5D24-46B7-A359-0BFE96B9CB40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37ACDFBE-5D24-46B7-A359-0BFE96B9CB40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37ACDFBE-5D24-46B7-A359-0BFE96B9CB40}.Release|Any CPU.Build.0 = Release|Any CPU
-		{27E710F6-95F9-495F-81A5-275176FFA36C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27E710F6-95F9-495F-81A5-275176FFA36C}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27E710F6-95F9-495F-81A5-275176FFA36C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27E710F6-95F9-495F-81A5-275176FFA36C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -64,7 +58,6 @@ Global
 		{65DC8E2B-1D2F-4C6A-9C3C-385B1CA323D2} = {6D5DA82E-ADD1-44E7-AF8B-E5D813DB747A}
 		{94964CC3-BE3F-428D-BA43-99A0156B1103} = {6D5DA82E-ADD1-44E7-AF8B-E5D813DB747A}
 		{37ACDFBE-5D24-46B7-A359-0BFE96B9CB40} = {6D5DA82E-ADD1-44E7-AF8B-E5D813DB747A}
-		{27E710F6-95F9-495F-81A5-275176FFA36C} = {6D5DA82E-ADD1-44E7-AF8B-E5D813DB747A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {291369D3-FE05-4FBF-A073-597B7747D35C}

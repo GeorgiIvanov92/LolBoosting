@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using LoLBoosting.Contracts.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace LoLBoosting.Models
+namespace LoLBoosting.Entities
 {
     public class User : IdentityUser, IDeletableEntity
     {

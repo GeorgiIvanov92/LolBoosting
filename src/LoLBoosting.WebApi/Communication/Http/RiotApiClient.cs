@@ -1,4 +1,4 @@
-﻿using LoLBoosting.Common.Dtos;
+﻿using LoLBoosting.Contracts.Dtos;
 using LoLBoosting.Contracts.Orders;
 using System;
 using System.Net.Http;

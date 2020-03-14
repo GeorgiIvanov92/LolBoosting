@@ -1,4 +1,4 @@
-﻿using LoLBoosting.Models;
+﻿using LoLBoosting.Entities;
 using LoLBoosting.WebApi.Controllers;
 
 namespace LoLBoosting.WebApi.Extensions

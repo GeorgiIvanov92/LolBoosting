@@ -1,5 +1,5 @@
 ﻿using LoLBoosting.Data.Context;
-using LoLBoosting.Models;
+using LoLBoosting.Entities;
 
 namespace LoLBoosting.Data.Repository
 {

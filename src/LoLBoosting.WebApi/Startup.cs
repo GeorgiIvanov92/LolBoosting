@@ -12,10 +12,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using LoLBoosting.Data.Context;
 using LoLBoosting.Data.Seeding;
-using LoLBoosting.Models;
 using LoLBoosting.Data.Repository;
 using LolBoosting.WebApi.Infrastructure.Extensions.ServiceCollection;
 using LoLBoosting.WebApi.Communication.Http;
+using LoLBoosting.Entities;
 
 namespace LolBoosting
 {

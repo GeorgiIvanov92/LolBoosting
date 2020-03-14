@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace LoLBoosting.Models
+namespace LoLBoosting.Entities
 {
     public class Order : IDeletableEntity
     {

@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using LoLBoosting.Data.Repository;
 using LoLBoosting.WebApi.Extensions;
-using LoLBoosting.Models;
 using LoLBoosting.Contracts.Models;
 using LoLBoosting.WebApi.Communication.Http;
 using LoLBoosting.Contracts.Orders;
+using LoLBoosting.Entities;
 
 namespace LoLBoosting.WebApi.Controllers
 {

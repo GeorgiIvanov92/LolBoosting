@@ -1,9 +1,9 @@
 ﻿using IdentityServer4.EntityFramework.Options;
-using LoLBoosting.Models;
 using LoLBoosting.Data.Context.EntityConfigurations;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using LoLBoosting.Entities;
 
 namespace LoLBoosting.Data.Context
 {

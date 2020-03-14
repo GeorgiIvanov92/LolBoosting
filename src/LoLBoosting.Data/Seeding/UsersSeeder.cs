@@ -1,6 +1,6 @@
 ﻿using LoLBoosting.Constants;
 using LoLBoosting.Data.Context;
-using LoLBoosting.Models;
+using LoLBoosting.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 using System;
