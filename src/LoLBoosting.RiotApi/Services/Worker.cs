@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace LoLBoosting.RiotApi.Core
+namespace LoLBoosting.RiotApi.Services
 {
     public class Worker : IHostedService
     {

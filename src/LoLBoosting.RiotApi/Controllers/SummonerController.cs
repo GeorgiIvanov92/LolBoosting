@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using LoLBoosting.Contracts.Dtos;
+using LoLBoosting.Contracts.Orders;
+using LoLBoosting.RiotApi.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LoLBoosting.RiotApi.Controllers
@@ -8,12 +10,20 @@ namespace LoLBoosting.RiotApi.Controllers
     [ApiController]
     public class SummonerController : ControllerBase
     {
-        [HttpPost]
-        public Task<Summoner> GetSummonerDetails(string summonerName)
-        {
-            var result = new Summoner();
+        private readonly RIotService _riotService;
 
-            return Task.FromResult(result);
+        public SummonerController(RIotService riotService)
+        {
+            _riotService = riotService;
+        }
+
+        [HttpGet]
+        [Route("GetSummoner")]
+        public async Task<Summoner> GetSummonerDetails(string summonerName, EServer serverName)
+        {
+            var result = await _riotService.GetSummonerDetailsAsync(summonerName, serverName);
+
+            return result;
         }
     }
 }

@@ -2,10 +2,11 @@
 {
     public enum EServer
     {
-        EUW = 1,
-        EUNE = 2,
-        NA = 3,
-        TR = 4,
-        RU = 5
+        EUW1 = 1,
+        EUN1 = 2,
+        NA1 = 3,
+        TR1 = 4,
+        RU = 5,
+        KR = 6
     }
 }
