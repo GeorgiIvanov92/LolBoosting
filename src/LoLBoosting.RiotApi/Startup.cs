@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LoLBoosting.Constants;
 using LoLBoosting.Data.Context;
+using LoLBoosting.RiotApi.Models;
 using LoLBoosting.RiotApi.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +37,8 @@ namespace LoLBoosting.RiotApi
             services.AddDbContext<LolBoostingDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString(ConfigurtaionConfigKeys.SqlConnectonNameKey)));
 
+            services.AddOptions();
+            services.Configure<DevelopmentApiKey>(Configuration.GetSection(RiotApiConstants.ApiKeyClassName));
             services.AddHttpClient<RIotService>();
 
             services.AddSwaggerGen(c =>

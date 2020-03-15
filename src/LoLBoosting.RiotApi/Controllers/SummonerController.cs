@@ -22,7 +22,6 @@ namespace LoLBoosting.RiotApi.Controllers
         public async Task<Summoner> GetSummonerDetails(string summonerName, EServer serverName)
         {
             var result = await _riotService.GetSummonerDetailsAsync(summonerName, serverName);
-
             return result;
         }
     }
