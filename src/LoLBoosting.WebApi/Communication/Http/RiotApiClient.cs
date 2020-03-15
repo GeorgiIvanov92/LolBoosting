@@ -2,6 +2,7 @@
 using LoLBoosting.Contracts.Orders;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -28,6 +29,18 @@ namespace LoLBoosting.WebApi.Communication.Http
             var summoner = JsonConvert.DeserializeObject<Summoner>(responseStream);
 
             return summoner;
+        }
+
+        public async Task<IEnumerable<League>> GetLeagueDetailsAsync(string summonerName, EServer summonerServer)
+        {
+            var response = await Client.GetAsync($"api/Summoner/GetLeague?summonerName={summonerName}&serverName={summonerServer}");
+
+            response.EnsureSuccessStatusCode();
+
+            var responseStream = await response.Content.ReadAsStringAsync();
+            var leagues = JsonConvert.DeserializeObject<IEnumerable<League>>(responseStream);
+
+            return leagues;
         }
     }
 }

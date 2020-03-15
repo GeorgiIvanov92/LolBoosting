@@ -5,18 +5,19 @@ using LoLBoosting.RiotApi.Models;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace LoLBoosting.RiotApi.Services
 {
-    public class RIotService
+    public class RiotService
     {
         private readonly IOptionsMonitor<DevelopmentApiKey> _optionsMonitor;
 
         public HttpClient Client { get; }
 
-        public RIotService(HttpClient client, IOptionsMonitor<DevelopmentApiKey> optionsMonitor)
+        public RiotService(HttpClient client, IOptionsMonitor<DevelopmentApiKey> optionsMonitor)
         {
             client.BaseAddress = new Uri(string.Format(RiotApiConstants.BaseUrl, "euw1"));
             client.DefaultRequestHeaders.Add("Origin",
@@ -52,6 +53,19 @@ namespace LoLBoosting.RiotApi.Services
             var summoner = JsonConvert.DeserializeObject<Summoner>(responseStream);
 
             return summoner;
+        }
+
+        public async Task<IEnumerable<League>> GetLeagueDetailsAsync(string encryptedSummonerId, EServer summonerServer)
+        {
+            Client.BaseAddress = new Uri(string.Format(RiotApiConstants.BaseUrl, summonerServer.ToString()));
+            var response = await Client.GetAsync(string.Format(RiotApiConstants.LeagueBySummonerId, encryptedSummonerId));
+
+            response.EnsureSuccessStatusCode();
+
+            var responseStream = await response.Content.ReadAsStringAsync();
+            var leagues = JsonConvert.DeserializeObject<IEnumerable<League>>(responseStream);
+
+            return leagues;
         }
     }
 }
