@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LoLBoosting.Constants;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 namespace LoLBoosting.RiotApi
 {
@@ -21,7 +21,7 @@ namespace LoLBoosting.RiotApi
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
                     config.AddJsonFile(
-                        "developmentapikey.json", optional: true, reloadOnChange: true);
+                        $"{RiotApiConstants.ApiKeyFileName}", optional: true, reloadOnChange: true);
                 })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {

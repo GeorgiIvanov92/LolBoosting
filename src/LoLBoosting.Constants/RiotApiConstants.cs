@@ -2,6 +2,8 @@
 {
     public class RiotApiConstants
     {
+        public const string ApiKeyFileName = "developmentapikey.json";
+
         public const string ApiKeyClassName = "DevelopmentApiKey";
 
         public const string BaseUrl = "https://{0}.api.riotgames.com";  

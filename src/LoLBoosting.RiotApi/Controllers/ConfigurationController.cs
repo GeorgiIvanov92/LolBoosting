@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using LoLBoosting.Constants;
 using LoLBoosting.RiotApi.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -41,7 +42,7 @@ namespace LoLBoosting.RiotApi.Controllers
             {            
                 var newKey = new ChangeKey { DevelopmentApiKey = new DevelopmentApiKey { RiotToken = newApiKey }};
                 var configAsString = JsonConvert.SerializeObject(newKey, Formatting.Indented);
-                System.IO.File.WriteAllText(@"developmentapikey.json", configAsString);
+                System.IO.File.WriteAllText($@"{RiotApiConstants.ApiKeyFileName}", configAsString);
 
                 return Ok();
             }
