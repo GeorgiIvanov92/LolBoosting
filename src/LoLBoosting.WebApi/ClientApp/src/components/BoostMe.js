@@ -11,13 +11,13 @@ export class BoostMe extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            forecasts: [],
-            loading: true,
+            orderType: '',
             schema: yup.object({
                 username: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
                 password: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
                 nickname: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
                 server: yup.string().required('Server is required!'),
+                orderType: yup.string().required('Order Type is required!'),
             })
         }
 
@@ -122,9 +122,29 @@ export class BoostMe extends Component {
 
                                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                             </Form.Group>
-                            {this.RenderOrderSpecifics("SoloQueueWins")}
                         </Form.Row>
-
+                        <Form.Row>
+                            <Form.Group as={Col} md="4" controlId="validationFormik05">
+                                <Form.Label>Order Type</Form.Label>
+                                <select
+                                    name="orderType"
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    style={{ display: 'block' }}
+                                >
+                                    <option value="" label="Select an Order Type" />
+                                    <option value="SoloQueueWins" label="Solo Queue Wins" />
+                                </select>
+                                {errors.server &&
+                                    <div style={{ color: 'red' }} className="input-feedback">
+                                        {errors.orderType}
+                                    </div>}
+                                <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                            </Form.Group>
+                        </Form.Row>
+                        <Form.Row>
+                            {this.RenderOrderSpecifics(this.state.orderType)}
+                            </Form.Row>
                         <Button type="submit">Proceed to Payment</Button>
                     </Form>
                 )}

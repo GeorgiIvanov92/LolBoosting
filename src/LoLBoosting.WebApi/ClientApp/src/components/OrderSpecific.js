@@ -20,6 +20,8 @@ export class OrderSpecific extends Component {
         if (orderType === "SoloQueueWins") {
             return <SoloQueueWins/>
         }
+
+        return <div></div>
     }
 
 
