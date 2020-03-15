@@ -17,7 +17,7 @@ using LolBoosting.WebApi.Infrastructure.Extensions.ServiceCollection;
 using LoLBoosting.WebApi.Communication.Http;
 using LoLBoosting.Entities;
 
-namespace LolBoosting
+namespace LolBoosting.WebApi
 {
     public class Startup
     {

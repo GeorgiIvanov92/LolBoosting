@@ -1,7 +1,5 @@
 ﻿import React, { Component } from 'react';
-import { Col, Form, InputGroup, Button } from 'react-bootstrap';
-import { Formik, Field, Feedback } from 'formik';
-import * as yup from 'yup';
+import Slider from 'react-input-slider';
 
 export class SoloQueueWins extends Component {
     static displayName = SoloQueueWins.name;
@@ -9,19 +7,24 @@ export class SoloQueueWins extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            x: 5
         }
         this.RenderSoloQueueWinsOrder = this.RenderSoloQueueWinsOrder.bind(this);
     }
 
     RenderSoloQueueWinsOrder() {
         return (
-            <Form>
-                <Form.Group controlId="formBasicRangeCustom">
-                    <Form.Label>Range</Form.Label>
-                    <Form.Control type="range" custom />
-                </Form.Group>
-            </Form>
+                <div>
+                <h2 style={{ "text-align": "center" }}>{this.state.x} {this.state.x === 1 ? "Win" : "Wins"}</h2>
+            <Slider
+                axis="x"
+                xstep={1}
+                xmin={1}
+                xmax={15}
+                x={this.state.x}
+                onChange={({ x }) => this.setState({ x: parseInt(x) })}
+                />
+                </div>
         );
     }
 

@@ -15,7 +15,7 @@ export default class App extends Component {
   render () {
     return (
       <Layout>
-        <Route exact path='/' component={Home} />
+            <Route exact path='/' component={Home} />
             <AuthorizeRoute path='/boostme' component={BoostMe} />
         <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
       </Layout>

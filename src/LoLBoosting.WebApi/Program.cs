@@ -7,7 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
-namespace LolBoosting
+namespace LolBoosting.WebApi
 {
     public class Program
     {
