@@ -61,23 +61,29 @@ namespace LoLBoosting.WebApi.Controllers
             if (ModelState.IsValid)
             {
                 var summoner = await _riotApiClient.GetSummonerDetailsAsync(orderIn.AccountUsername, orderIn.SummonerServer);
+                var summonerLeagues = await _riotApiClient.GetLeagueDetailsAsync(summoner.Id, orderIn.SummonerServer);
 
                 var order = orderIn.ToOrder();
-                var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
-                order.CustomerId = user.Id;
-                order.OrderStatus = EOrderStatus.WaitingVerification;
 
-                _orderRepository.Add(order);
-                await _orderRepository.SaveChangesAsync();
-
-                var orderOut = new OrderOut
+                if (order.IsValid(summoner, summonerLeagues))
                 {
-                    ClientId = order.Customer.Id,
-                    AccountUsername = order.AccountUsername,
-                    AccountPassword = order.AccountPassword
-                };
 
-                return Created($"{ControllerContext.ActionDescriptor.ControllerName}/{order.OrderId}", orderOut);
+                    var user = await _userManager.FindByNameAsync(this.User.Identity.Name);
+                    order.CustomerId = user.Id;
+                    order.OrderStatus = EOrderStatus.WaitingVerification;
+
+                    _orderRepository.Add(order);
+                    await _orderRepository.SaveChangesAsync();
+
+                    var orderOut = new OrderOut
+                    {
+                        ClientId = order.Customer.Id,
+                        AccountUsername = order.AccountUsername,
+                        AccountPassword = order.AccountPassword
+                    };
+
+                    return Created($"{ControllerContext.ActionDescriptor.ControllerName}/{order.OrderId}", orderOut);
+                }
             }
 
             return BadRequest();

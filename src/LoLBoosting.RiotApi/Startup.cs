@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using LoLBoosting.Constants;
 using LoLBoosting.Data.Context;
@@ -16,6 +17,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Polly;
+using Polly.Extensions.Http;
 using static LoLBoosting.Constants.ApiConstants;
 
 namespace LoLBoosting.RiotApi
@@ -39,12 +42,23 @@ namespace LoLBoosting.RiotApi
 
             services.AddOptions();
             services.Configure<DevelopmentApiKey>(Configuration.GetSection(RiotApiConstants.ApiKeyClassName));
-            services.AddHttpClient<RIotService>();
+
+            services.AddHttpClient<RiotService>()
+                .AddPolicyHandler(GetRetryPolicy());
 
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Rito API", Version = "v1" });
             });
+        }
+
+        private IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,
+                                                                            retryAttempt)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

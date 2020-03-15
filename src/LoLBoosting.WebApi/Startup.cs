@@ -16,6 +16,9 @@ using LoLBoosting.Data.Repository;
 using LolBoosting.WebApi.Infrastructure.Extensions.ServiceCollection;
 using LoLBoosting.WebApi.Communication.Http;
 using LoLBoosting.Entities;
+using Polly;
+using System.Net.Http;
+using Polly.Extensions.Http;
 
 namespace LolBoosting.WebApi
 {
@@ -37,7 +40,8 @@ namespace LolBoosting.WebApi
             services.AddScoped<IDeletebleEntityRepository<Order>, DeletableEntityRepository<Order>>();
             //services.AddScoped(typeof(IRepository<>), typeof(OrderRepository));
 
-            services.AddHttpClient<RiotApiClient>();
+            services.AddHttpClient<RiotApiClient>()
+                .AddPolicyHandler(GetRetryPolicy());
             //services.AddSingleton<RiotApiClient>();
 
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -70,6 +74,15 @@ namespace LolBoosting.WebApi
             {
                 configuration.RootPath = "ClientApp/build";
             });
+        }
+
+        private IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+                .WaitAndRetryAsync(3, retryAttempt => TimeSpan.FromSeconds(Math.Pow(2,
+                                                                            retryAttempt)));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -1,6 +1,8 @@
-﻿using LoLBoosting.Contracts.Models;
+﻿using LoLBoosting.Contracts.Dtos;
+using LoLBoosting.Contracts.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LoLBoosting.Entities
 {
@@ -35,5 +37,20 @@ namespace LoLBoosting.Entities
         //Deleteble
         public bool IsDeleted { get; set; }
         public DateTime? DeletedOn { get; set; }
+
+        public bool IsValid(Summoner summoner, IEnumerable<League> summonerLeagues)
+        {
+            //TODO: FINISH THIS
+            //queueType == RANKED_SOLO_5x5
+            //rank == "II"
+            //tier == "GOLD"
+            //leaguePoints == 0
+            //var leagueInfo = summonerLeagues.FirstOrDefault(leagueInfo => leagueInfo.QueueType.Equals(OrderType.ToString()));
+
+            return summoner != null;
+            //&& StartingTier.ToString().Equals(leagueInfo.Tier, StringComparison.InvariantCultureIgnoreCase);
+            //&& StartingLP.Equals(leagueInfo.LeaguePoints)
+            //&& StartingDivision.Equals(leagueInfo.Rank, StringComparison.InvariantCultureIgnoreCase);
+        }
     }
 }
