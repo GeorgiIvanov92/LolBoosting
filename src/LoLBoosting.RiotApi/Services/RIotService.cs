@@ -51,6 +51,7 @@ namespace LoLBoosting.RiotApi.Services
 
             var responseStream = await response.Content.ReadAsStringAsync();
             var summoner = JsonConvert.DeserializeObject<Summoner>(responseStream);
+            summoner.Server = summonerServer;
 
             return summoner;
         }

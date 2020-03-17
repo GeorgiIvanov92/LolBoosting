@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using LoLBoosting.Constants;
 using LoLBoosting.Contracts.Dtos;
 using LoLBoosting.Contracts.Orders;
 using LoLBoosting.RiotApi.Services;
@@ -19,19 +20,17 @@ namespace LoLBoosting.RiotApi.Controllers
         }
 
         [HttpGet]
-        [Route("GetSummoner")]
+        [Route(GlobalConstants.RiotApiEndpoints.SummonerDetails)]
         public async Task<Summoner> GetSummonerDetails(string summonerName, EServer serverName)
         {
-            var result = await _riotService.GetSummonerDetailsAsync(summonerName, serverName);
-            return result;
+            return await _riotService.GetSummonerDetailsAsync(summonerName, serverName);
         }
 
-        [HttpGet]
-        [Route("GetLeague")]
-        public async Task<IEnumerable<League>> GetLegueDetails(string encriptedSummonerId, EServer serverName)
+        [HttpPost]
+        [Route(GlobalConstants.RiotApiEndpoints.LeaguesOfSummoner)]
+        public async Task<IEnumerable<League>> GetLegueDetailsOfSummoner([FromBody] Summoner summoner)
         {
-            var result = await _riotService.GetLeagueDetailsAsync(encriptedSummonerId, serverName);
-            return result;
+            return await _riotService.GetLeagueDetailsAsync(summoner.Id, summoner.Server);
         }
     }
 }

@@ -61,7 +61,8 @@ namespace LoLBoosting.WebApi.Controllers
             if (ModelState.IsValid)
             {
                 var summoner = await _riotApiClient.GetSummonerDetailsAsync(orderIn.AccountUsername, orderIn.SummonerServer);
-                var summonerLeagues = await _riotApiClient.GetLeagueDetailsAsync(summoner.Id, orderIn.SummonerServer);
+                var summonerLeagues = await _riotApiClient.GetLeagueDetailsAsync(summoner);
+                //TODO: Store the summoner and league info in DB???
 
                 var order = orderIn.ToOrder();
 

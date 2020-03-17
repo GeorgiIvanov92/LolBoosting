@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LoLBoosting.Contracts.Orders;
+using Newtonsoft.Json;
 
 namespace LoLBoosting.Contracts.Dtos
 {
@@ -14,5 +15,7 @@ namespace LoLBoosting.Contracts.Dtos
         public string Puuid { get; set; }
         [JsonProperty("summonerLevel")]
         public int SummonerLevel { get; set; }
+
+        public EServer Server { get; set; }
     }
 }
