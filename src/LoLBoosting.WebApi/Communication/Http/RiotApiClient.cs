@@ -12,7 +12,7 @@ namespace LoLBoosting.WebApi.Communication.Http
 {
     public class RiotApiClient
     {
-        private const string BaseUrl = "https://localhost:44380";
+        private const string BaseUrl = "https://localhost:44380/";
         public HttpClient Client { get; }
 
         public RiotApiClient(HttpClient client)

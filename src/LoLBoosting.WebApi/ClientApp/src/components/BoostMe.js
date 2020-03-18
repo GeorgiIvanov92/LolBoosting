@@ -12,6 +12,8 @@ export class BoostMe extends Component {
         super(props);
         this.state = {
             orderType: '',
+            nickName: '',
+            RiotApiGetUserUrl: 'order/ValidateUsername?username=',
             schema: yup.object({
                 username: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
                 password: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
@@ -22,6 +24,7 @@ export class BoostMe extends Component {
         }
 
         this.FormExample = this.FormExample.bind(this);
+        this.ValidateUser = this.ValidateUser.bind(this);
         this.RenderOrderSpecifics = this.RenderOrderSpecifics.bind(this);
     }
 
@@ -91,7 +94,7 @@ export class BoostMe extends Component {
                                 <Form.Control
                                     type="text"
                                     name="nickname"
-                                    onChange={handleChange}
+                                    onChange={nick => this.setState({ nickName: nick.target.value })}
                                     isValid={touched.nickname && !errors.nickname}
                                     isInvalid={!!errors.nickname}
                                 />
@@ -122,20 +125,26 @@ export class BoostMe extends Component {
 
                                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                             </Form.Group>
+
+                            <Button onClick={this.ValidateUser}type="submit">Check my Account</Button>
+
                         </Form.Row>
                         <Form.Row>
                             <Form.Group as={Col} md="4" controlId="validationFormik05">
                                 <Form.Label>Order Type</Form.Label>
                                 <select
                                     name="orderType"
-                                    onChange={handleChange}
                                     onBlur={handleBlur}
                                     style={{ display: 'block' }}
+                                    onChange=
+                                    {
+                                        type => this.setState({ orderType: type.target.value })
+                                    }
                                 >
                                     <option value="" label="Select an Order Type" />
                                     <option value="SoloQueueWins" label="Solo Queue Wins" />
                                 </select>
-                                {errors.server &&
+                                {errors.orderType &&
                                     <div style={{ color: 'red' }} className="input-feedback">
                                         {errors.orderType}
                                     </div>}
@@ -157,6 +166,10 @@ export class BoostMe extends Component {
         return (
             this.FormExample()
         );
+    }
+
+    async ValidateUser() {
+        const response = await fetch(this.state.RiotApiGetUserUrl + this.state.nickName + '&server=1').then(response => response.json());
     }
 
     async populateWeatherData() {

@@ -7,7 +7,7 @@ export class SoloQueueWins extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            x: 5
+            x: 10
         }
         this.RenderSoloQueueWinsOrder = this.RenderSoloQueueWinsOrder.bind(this);
     }

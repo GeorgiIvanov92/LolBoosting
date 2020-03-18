@@ -1,5 +1,8 @@
-﻿using System.Net;
+﻿using System.Collections;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
+using LoLBoosting.Contracts.Dtos;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -90,6 +93,25 @@ namespace LoLBoosting.WebApi.Controllers
             return BadRequest();
         }
 
+        [HttpGet]
+        [Route("ValidateUsername")]
+        [Authorize(Roles = "Client,Administrator")]
+        [ProducesResponseType(typeof(IEnumerable<League>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        public async Task<ActionResult<IEnumerable<League>>> ValidateUserName(string username, int server)
+        {
+            if (ModelState.IsValid)
+            {
+                var summoner =
+                    await _riotApiClient.GetSummonerDetailsAsync(username, (EServer)server);
+                var summonerLeagues = await _riotApiClient.GetLeagueDetailsAsync(summoner);
+
+                return Ok(summonerLeagues);
+
+            }
+
+            return BadRequest();
+        }
 
         /// <summary>
         /// 
