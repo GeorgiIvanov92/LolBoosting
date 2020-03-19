@@ -1,8 +1,8 @@
 ﻿import React, { Component } from 'react';
 import Slider from 'react-input-slider';
 
-export class SoloQueueWins extends Component {
-    static displayName = SoloQueueWins.name;
+export class WinsBoost extends Component {
+    static displayName = WinsBoost.name;
 
     constructor(props) {
         super(props);
@@ -15,7 +15,7 @@ export class SoloQueueWins extends Component {
     RenderSoloQueueWinsOrder() {
         return (
                 <div>
-                <h2 style={{ "text-align": "center" }}>{this.state.x} {this.state.x === 1 ? "Win" : "Wins"}</h2>
+                <h2 style={{ "textAlign": "center" }}>{this.state.x} {this.state.x === 1 ? "Win" : "Wins"}</h2>
             <Slider
                 axis="x"
                 xstep={1}

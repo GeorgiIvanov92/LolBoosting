@@ -98,13 +98,15 @@ namespace LoLBoosting.WebApi.Controllers
         [Authorize(Roles = "Client,Administrator")]
         [ProducesResponseType(typeof(IEnumerable<League>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<IEnumerable<League>>> ValidateUserName(string username, int server)
+        public async Task<ActionResult<IEnumerable<League>>> ValidateUserAndCalculatePrice(string username, EServer server, EOrderType orderType)
         {
             if (ModelState.IsValid)
             {
                 var summoner =
-                    await _riotApiClient.GetSummonerDetailsAsync(username, (EServer)server);
+                    await _riotApiClient.GetSummonerDetailsAsync(username,server);
                 var summonerLeagues = await _riotApiClient.GetLeagueDetailsAsync(summoner);
+
+                //TODO: calculate price
 
                 return Ok(summonerLeagues);
 
