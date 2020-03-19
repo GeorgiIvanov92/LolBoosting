@@ -1,9 +1,11 @@
 ﻿import React, { Component } from 'react';
 import authService from './api-authorization/AuthorizeService'
-import { Col, Form, InputGroup, Button } from 'react-bootstrap';
+import { Col, Form, InputGroup, Button, Spinner } from 'react-bootstrap';
 import { Formik, Field, Feedback } from 'formik';
 import * as yup from 'yup';
 import { OrderSpecific } from "./OrderSpecific";
+import { Servers } from "./api-authorization/Contracts/Enums";
+import { ValidationStates } from "./api-authorization/Contracts/Enums";
 
 export class BoostMe extends Component {
     static displayName = BoostMe.name;
@@ -11,7 +13,12 @@ export class BoostMe extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            currentValidationState: ValidationStates.NotStarted,
+            isAccountValid: false,
+            selectedServer: Servers.None,
             orderType: '',
+            nickName: '',
+            RiotApiGetUserUrl: 'order/ValidateUsername?username=',
             schema: yup.object({
                 username: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
                 password: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
@@ -22,7 +29,9 @@ export class BoostMe extends Component {
         }
 
         this.FormExample = this.FormExample.bind(this);
+        this.ValidateUser = this.ValidateUser.bind(this);
         this.RenderOrderSpecifics = this.RenderOrderSpecifics.bind(this);
+        this.CheckForValidation = this.CheckForValidation.bind(this);
     }
 
     RenderOrderSpecifics(orderType) {
@@ -91,7 +100,7 @@ export class BoostMe extends Component {
                                 <Form.Control
                                     type="text"
                                     name="nickname"
-                                    onChange={handleChange}
+                                    onChange={(nick) => { handleChange(nick); this.setState({ nickName: nick.target.value })}}
                                     isValid={touched.nickname && !errors.nickname}
                                     isInvalid={!!errors.nickname}
                                 />
@@ -106,7 +115,9 @@ export class BoostMe extends Component {
                                 <Form.Label>Account Server</Form.Label>
                                 <select
                                     name="server"
-                                    onChange={handleChange}
+                                    onChange={(server) => { handleChange(server); this.setState({
+                                        currentServer: Servers[server.target.value]
+                                    })}}
                                     onBlur={handleBlur}
                                     style={{ display: 'block' }}
                                 >
@@ -124,28 +135,35 @@ export class BoostMe extends Component {
                             </Form.Group>
                         </Form.Row>
                         <Form.Row>
-                            <Form.Group as={Col} md="4" controlId="validationFormik05">
+                            <Form.Group as={Col} controlId="validationFormik05">
                                 <Form.Label>Order Type</Form.Label>
                                 <select
                                     name="orderType"
-                                    onChange={handleChange}
                                     onBlur={handleBlur}
                                     style={{ display: 'block' }}
+                                    onChange=
+                                    {
+                                        (type) => {
+                                            handleChange(type);
+                                            this.setState({ orderType: type.target.value })
+                                        }}
                                 >
                                     <option value="" label="Select an Order Type" />
                                     <option value="SoloQueueWins" label="Solo Queue Wins" />
                                 </select>
-                                {errors.server &&
+                                {errors.orderType &&
                                     <div style={{ color: 'red' }} className="input-feedback">
                                         {errors.orderType}
                                     </div>}
                                 <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                             </Form.Group>
-                        </Form.Row>
+                            <Button disabled={errors.server || errors.nickname || errors.orderType} active size="sm" variant="dark" onClick={this.ValidateUser} type="submit">Check my Account</Button>
+                            {this.CheckForValidation()}
+                            </Form.Row>
                         <Form.Row>
                             {this.RenderOrderSpecifics(this.state.orderType)}
-                            </Form.Row>
-                        <Button type="submit">Proceed to Payment</Button>
+                        </Form.Row>
+                        <Button className='mt-5' type="submit">Proceed to Payment</Button>
                     </Form>
                 )}
         </Formik>
@@ -157,6 +175,25 @@ export class BoostMe extends Component {
         return (
             this.FormExample()
         );
+    }
+
+    CheckForValidation() {
+        switch (this.state.currentValidationState) {
+            case ValidationStates.NotStarted:
+                return <div></div>;
+            case ValidationStates.Validating:
+                return <Spinner margin="sm" animation="border" role="status">
+                           <span className="sr-only">Loading...</span>
+                       </Spinner>
+        }
+    }
+
+    async ValidateUser() {
+        this.setState({
+            currentValidationState:
+                ValidationStates.Validating
+        });
+        const response = await fetch(this.state.RiotApiGetUserUrl + this.state.nickName + '&server=' + this.state.currentServer).then(response => response.json());
     }
 
     async populateWeatherData() {
