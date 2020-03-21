@@ -41,6 +41,7 @@
     <ProjectReference Include="..\LoLBoosting.Contracts\LoLBoosting.Contracts.csproj" />
     <ProjectReference Include="..\LoLBoosting.Data\LoLBoosting.Data.csproj" />
     <ProjectReference Include="..\LoLBoosting.Models\LoLBoosting.Entities.csproj" />
+    <ProjectReference Include="..\LolBoosting.Services\LolBoosting.Services.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

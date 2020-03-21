@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using LoLBoosting.Contracts.Dtos;
@@ -12,6 +14,7 @@ using LoLBoosting.Contracts.Models;
 using LoLBoosting.WebApi.Communication.Http;
 using LoLBoosting.Contracts.Orders;
 using LoLBoosting.Entities;
+using LolBoosting.Services;
 
 namespace LoLBoosting.WebApi.Controllers
 {
@@ -22,12 +25,21 @@ namespace LoLBoosting.WebApi.Controllers
         private IRepository<Order> _orderRepository;
         private UserManager<User> _userManager;
         private readonly RiotApiClient _riotApiClient;
+        private readonly MultiplyCalculator _multiplyCalculator;
+        private const string RankedSoloQueue = "RANKED_SOLO_5x5";
+        private readonly IRepository<TierRate> _tierRateRepository;
 
-        public OrderController(IDeletebleEntityRepository<Order> orderRepositpory, UserManager<User> userManager, RiotApiClient riotApiClient)
+        public OrderController(IDeletebleEntityRepository<Order> orderRepositpory,
+            IRepository<TierRate> tierRateRepository,
+            UserManager<User> userManager,
+            RiotApiClient riotApiClient,
+            MultiplyCalculator multiplyCalculator)
         {
             _orderRepository = orderRepositpory;
             _userManager = userManager;
             _riotApiClient = riotApiClient;
+            _multiplyCalculator = multiplyCalculator;
+            _tierRateRepository = tierRateRepository;
         }
 
         /// <summary>
@@ -94,11 +106,11 @@ namespace LoLBoosting.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("ValidateUsername")]
+        [Route("CalculatePrice")]
         [Authorize(Roles = "Client,Administrator")]
         [ProducesResponseType(typeof(IEnumerable<League>), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<IEnumerable<League>>> ValidateUserAndCalculatePrice(string username, EServer server, EOrderType orderType)
+        public async Task<ActionResult<IEnumerable<League>>> CalculatePrice(string username, EServer server, EOrderType orderType)
         {
             if (ModelState.IsValid)
             {
@@ -106,9 +118,21 @@ namespace LoLBoosting.WebApi.Controllers
                     await _riotApiClient.GetSummonerDetailsAsync(username,server);
                 var summonerLeagues = await _riotApiClient.GetLeagueDetailsAsync(summoner);
 
-                //TODO: calculate price
+                var soloQueueLeague = summonerLeagues?.FirstOrDefault(l =>
+                    l.QueueType.Equals(RankedSoloQueue, StringComparison.InvariantCultureIgnoreCase));
 
-                return Ok(summonerLeagues);
+                if (soloQueueLeague != null)
+                {
+                    Enum.TryParse(soloQueueLeague.Tier, true, out ETier tier);
+                    Enum.TryParse(soloQueueLeague.Rank, true, out EDivision division);
+
+                    var multiplier = _multiplyCalculator.GetMultiplier(division, soloQueueLeague.LeaguePoints, orderType);
+                    var rate = _tierRateRepository.Find(tier);
+
+                    var price = multiplier * rate.Price;
+
+                    return Ok(summonerLeagues);
+                }
 
             }
 

@@ -38,11 +38,10 @@ namespace LolBoosting.WebApi
             services.RegisterServices(Configuration);
 
             services.AddScoped<IDeletebleEntityRepository<Order>, DeletableEntityRepository<Order>>();
-            //services.AddScoped(typeof(IRepository<>), typeof(OrderRepository));
+            services.AddScoped<IRepository<TierRate>,TierRateRepository>();
 
             services.AddHttpClient<RiotApiClient>()
                 .AddPolicyHandler(GetRetryPolicy());
-            //services.AddSingleton<RiotApiClient>();
 
             services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddRoles<IdentityRole>()
@@ -147,26 +146,6 @@ namespace LolBoosting.WebApi
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
-
-            CreateRoles(serviceProvider).GetAwaiter().GetResult();
-        }
-
-        private async Task CreateRoles(IServiceProvider serviceProvider)
-        {
-            //initializing custom roles 
-            var RoleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var UserManager = serviceProvider.GetRequiredService<UserManager<User>>();
-            string[] roleNames = { "Administrator", "Booster", "Client" };
-            IdentityResult roleResult;
-
-            foreach (var roleName in roleNames)
-            {
-                var roleExist = await RoleManager.RoleExistsAsync(roleName);
-                if (!roleExist)
-                {
-                    roleResult = await RoleManager.CreateAsync(new IdentityRole(roleName));
-                }
-            }
         }
     }
 }

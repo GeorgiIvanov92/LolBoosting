@@ -3,9 +3,9 @@
     public enum EDivision
     {
         Undefined = 0,
-        One = 1,
-        Two = 2,
-        Three = 3,
-        Four = 4,
+        I = 1,
+        II = 2,
+        III = 3,
+        IV = 4,
     }
 }

@@ -6,7 +6,7 @@ import * as yup from 'yup';
 import { OrderSpecific } from "./OrderSpecific";
 import { Server } from "./Utilities/Enums";
 import { ValidationState } from "./Utilities/Enums";
-import { Images } from "./Utilities/Enums";
+
 export class BoostMe extends Component {
     static displayName = BoostMe.name;
 
@@ -18,7 +18,7 @@ export class BoostMe extends Component {
             orderType: '',
             nickName: '',
             accountInfo: [],
-            RiotApiGetUserUrl: 'order/ValidateUsername?username=',
+            RiotApiGetUserUrl: 'order/CalculatePrice?username=',
             schema: yup.object({
                 username: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
                 password: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
@@ -188,7 +188,9 @@ export class BoostMe extends Component {
                            <span className="sr-only">Loading...</span>
                 </Spinner>
             case ValidationState.Confirmed:
-                return <Image src={Images[0].src}/>
+                return <div></div>
+            case ValidationState.Rejected:
+                return <div></div>
         }
     }
 

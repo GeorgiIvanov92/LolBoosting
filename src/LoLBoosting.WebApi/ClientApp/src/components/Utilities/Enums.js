@@ -24,8 +24,3 @@ export const OrderType = {
     DuoQGamesBoost: 5,
     Coaching: 6,
 }
-
-export const Images = [
-    { id: 1, src: '../Images/approved.jpg', title: 'approved' },
-    { id: 2, src: '../Images/rejected.jpg', title: 'rejected'}
-];

@@ -16,6 +16,7 @@ namespace LoLBoosting.Data.Context
         }
 
         public DbSet<Order> Orders { get; set; }
+        public DbSet<TierRate> TierRates { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

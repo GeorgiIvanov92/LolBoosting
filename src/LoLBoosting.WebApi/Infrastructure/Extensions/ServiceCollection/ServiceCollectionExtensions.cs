@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using LolBoosting.Services;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LolBoosting.WebApi.Infrastructure.Extensions.ServiceCollection
@@ -8,6 +9,8 @@ namespace LolBoosting.WebApi.Infrastructure.Extensions.ServiceCollection
         public static IServiceCollection RegisterServices(this IServiceCollection services, IConfiguration configuration)
         {
             services.RegisterContext(configuration);
+
+            services.AddSingleton<MultiplyCalculator>();
 
             return services;
         }
