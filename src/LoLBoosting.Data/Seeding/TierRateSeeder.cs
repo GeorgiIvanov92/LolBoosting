@@ -13,7 +13,7 @@ namespace LoLBoosting.Data.Seeding
     {
         private Dictionary<int, TierRate> _tierRates = new Dictionary<int, TierRate>
         {
-            {0 , new TierRate({TierRateId = ETier.Unranked, Price = 4, TierName = "Unranked"} },
+            {0 , new TierRate{TierRateId = ETier.Unranked, Price = 4, TierName = "Unranked"} },
             {1 , new TierRate{TierRateId = ETier.Iron, Price = 1.8, TierName = "Iron"} },
             {2 , new TierRate{TierRateId = ETier.Bronze, Price = 2.2, TierName = "Bronze"} },
             {3 , new TierRate{TierRateId = ETier.Silver, Price = 3.4, TierName = "Silver"} },
