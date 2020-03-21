@@ -5,6 +5,7 @@ import { Formik, Field, Feedback } from 'formik';
 import * as yup from 'yup';
 import { WinsBoost } from "./OrderTypes/WinsBoost";
 import { OrderType } from "./Utilities/Enums";
+import { GamesBoost } from "./OrderTypes/GamesBoost";
 
 export class OrderSpecific extends Component {
     static displayName = OrderSpecific.name;
@@ -16,7 +17,10 @@ export class OrderSpecific extends Component {
 
     RenderOrderSpecifics(orderType) {
         if (orderType === OrderType.WinsBoost) {
-            return <WinsBoost/>
+            return <WinsBoost price={this.props.price} />
+        }
+        if (orderType === OrderType.GamesBoost) {
+            return <GamesBoost price={this.props.price}/>
         }
 
         return <div></div>

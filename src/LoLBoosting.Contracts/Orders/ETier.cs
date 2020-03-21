@@ -2,7 +2,8 @@
 {
     public enum ETier
     {
-        Undefined = 0,
+        Undefined = -1,
+        Unranked = 0,
         Iron = 1,
         Bronze = 2,
         Silver = 3,
