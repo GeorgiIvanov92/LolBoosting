@@ -87,6 +87,8 @@ namespace LolBoosting.WebApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
+            //AutoMapperConfig.RegisterMappings();
+
             // Seed data on application startup
             using (var serviceScope = app.ApplicationServices.CreateScope())
             {
