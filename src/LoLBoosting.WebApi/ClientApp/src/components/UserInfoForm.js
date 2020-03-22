@@ -22,6 +22,7 @@ export class UserInfoForm extends Component {
                 nickname: yup.string().min(2, 'Too Short!').max(30, 'Too Long!').required('Required!'),
                 server: yup.string().required('Server is required!'),
             }),
+            orderType: 0,
             currentValidationState: ValidationState.NotStarted,
             selectedServer: Server.None,
             nickName: '',
@@ -36,6 +37,9 @@ export class UserInfoForm extends Component {
     }
 
     RenderOrderSpecifics(orderType) {
+        if (this.state.currentValidationState !== ValidationState.Confirmed) {
+            return <OrderSpecific orderType={orderType} />
+        }
         return <OrderSpecific price={this.state.orderMetadata.price} orderType={orderType} />
     }
 
@@ -150,7 +154,10 @@ export class UserInfoForm extends Component {
     }
 
     render() {
+        if (this.state.orderType !== this.props.orderType && this.state.currentValidationState === ValidationState.Confirmed) {
 
+            this.ValidateUser();
+        }
         return (
             this.GenericForm()
         );
@@ -172,9 +179,11 @@ export class UserInfoForm extends Component {
     }
 
     async ValidateUser() {
+
         this.setState({
             currentValidationState:
-                ValidationState.Validating
+                ValidationState.Validating,
+            orderType: this.props.orderType
         });
         const response = await fetch(this.state.RiotApiGetUserUrl +
             this.state.nickName +
