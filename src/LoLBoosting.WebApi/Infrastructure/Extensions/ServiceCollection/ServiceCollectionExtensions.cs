@@ -1,4 +1,5 @@
 ﻿using LolBoosting.Services;
+using LoLBoosting.WebApi.Filters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,10 @@ namespace LolBoosting.WebApi.Infrastructure.Extensions.ServiceCollection
             services.RegisterContext(configuration);
 
             services.AddSingleton<MultiplyCalculator>();
+
+            services.AddSingleton<UserRequestRegistry>();
+
+            services.AddScoped<AntiRequestSpamFilter>();
 
             return services;
         }

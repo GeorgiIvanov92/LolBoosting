@@ -27,7 +27,7 @@ export class UserInfoForm extends Component {
             selectedServer: Server.None,
             nickName: '',
             orderMetadata: [],
-            RiotApiGetUserUrl: 'order/CalculatePrice?username='
+            RiotApiGetUserUrl: 'order/CalculatePrice'
         };
 
         this.GenericForm = this.GenericForm.bind(this);
@@ -189,10 +189,15 @@ export class UserInfoForm extends Component {
                 ValidationState.Validating,
             orderType: this.props.orderType
         });
-        const response = await fetch(this.state.RiotApiGetUserUrl +
-            this.state.nickName +
-            '&server=' + this.state.currentServer +
-            '&orderType=' + this.props.orderType).then(response => response.json());
+        const response = await fetch(this.state.RiotApiGetUserUrl, {
+            method: 'post',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({
+                "username": this.state.nickName,
+                "server": this.state.currentServer,
+                "orderType": this.props.orderType
+            })
+        }).then(response => response.json());
 
         if (response) {
             this.setState({ orderMetadata: response, currentValidationState: ValidationState.Confirmed });

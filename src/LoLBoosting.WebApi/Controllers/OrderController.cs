@@ -15,6 +15,7 @@ using LoLBoosting.WebApi.Communication.Http;
 using LoLBoosting.Contracts.Orders;
 using LoLBoosting.Entities;
 using LolBoosting.Services;
+using LoLBoosting.WebApi.Filters;
 
 namespace LoLBoosting.WebApi.Controllers
 {
@@ -28,6 +29,7 @@ namespace LoLBoosting.WebApi.Controllers
         private readonly MultiplyCalculator _multiplyCalculator;
         private const string RankedSoloQueue = "RANKED_SOLO_5x5";
         private readonly IRepository<TierRate> _tierRateRepository;
+        private readonly UserRequestRegistry _userRequestRegistry;
         private readonly List<ETier> _foribiddenTiers = new List<ETier>
         {
             ETier.Challenger,
@@ -38,13 +40,15 @@ namespace LoLBoosting.WebApi.Controllers
             IRepository<TierRate> tierRateRepository,
             UserManager<User> userManager,
             RiotApiClient riotApiClient,
-            MultiplyCalculator multiplyCalculator)
+            MultiplyCalculator multiplyCalculator,
+            UserRequestRegistry userRequestRegistry)
         {
             _orderRepository = orderRepositpory;
             _userManager = userManager;
             _riotApiClient = riotApiClient;
             _multiplyCalculator = multiplyCalculator;
             _tierRateRepository = tierRateRepository;
+            _userRequestRegistry = userRequestRegistry;
         }
 
         /// <summary>
@@ -110,19 +114,21 @@ namespace LoLBoosting.WebApi.Controllers
             return BadRequest();
         }
 
-        [HttpGet]
+
+        [HttpPost]
+        [ServiceFilter(typeof(AntiRequestSpamFilter))]
         [Route("CalculatePrice")]
         [Authorize(Roles = "Client,Administrator")]
         [ProducesResponseType(typeof(OrderMetadataOut), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<ActionResult<OrderMetadataOut>> CalculatePrice(string username, EServer server, EOrderType orderType)
+        public async Task<ActionResult<OrderMetadataOut>> CalculatePrice([FromBody] OrderInfoIn orderInfo)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
                     var summoner =
-                        await _riotApiClient.GetSummonerDetailsAsync(username, server);
+                        await _riotApiClient.GetSummonerDetailsAsync(orderInfo.Username, orderInfo.Server);
 
                     var summonerLeagues = await _riotApiClient.GetLeagueDetailsAsync(summoner);
 
@@ -140,7 +146,7 @@ namespace LoLBoosting.WebApi.Controllers
                         }
 
                         var multiplier =
-                            _multiplyCalculator.GetMultiplier(division, soloQueueLeague.LeaguePoints, orderType);
+                            _multiplyCalculator.GetMultiplier(division, soloQueueLeague.LeaguePoints, orderInfo.OrderType);
                         var rate = _tierRateRepository.Find(tier);
 
                         var price = multiplier * rate.Price;
@@ -231,6 +237,12 @@ namespace LoLBoosting.WebApi.Controllers
             public string AccountPassword { get; set; }
         }
 
+        public class OrderInfoIn
+        {
+            public string Username { get; set; }
+            public EServer Server { get; set; }
+            public EOrderType OrderType { get; set; }
+        }
         public class OrderMetadataOut
         {
             public double Price { get; set; }
