@@ -103,7 +103,7 @@ export class UserInfoForm extends Component {
                                     <Form.Control
                                         type="text"
                                         name="nickname"
-                                        onChange={(nick) => { handleChange(nick); this.setState({ nickName: nick.target.value }) }}
+                                        onChange={(nick) => { handleChange(nick); this.setState({ nickName: nick.target.value, currentValidationState: ValidationState.NotStarted }) }}
                                         isValid={touched.nickname && !errors.nickname}
                                         isInvalid={!!errors.nickname}
                                     />
@@ -119,9 +119,11 @@ export class UserInfoForm extends Component {
                                     <select
                                         name="server"
                                         onChange={(server) => {
-                                            handleChange(server); this.setState({
-                                                currentServer: Server[server.target.value]
-                                            })
+                                            handleChange(server);
+                                            this.setState({
+                                                currentServer: Server[server.target.value],
+                                                currentValidationState: ValidationState.NotStarted
+                                            });
                                         }}
                                         onBlur={handleBlur}
                                         style={{ display: 'block' }}
@@ -179,7 +181,9 @@ export class UserInfoForm extends Component {
     }
 
     async ValidateUser() {
-
+        if (this.state.currentValidationState === ValidationState.Confirmed && this.state.orderType === this.props.orderType) {
+            return;
+        }
         this.setState({
             currentValidationState:
                 ValidationState.Validating,
