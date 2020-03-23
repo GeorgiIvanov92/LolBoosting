@@ -15,7 +15,7 @@ export class WinsBoost extends Component {
     RenderSoloQueueWinsOrder() {
         return (
                 <div>
-                <h2 style={{ "textAlign": "center" }}>{this.state.x} {this.state.x === 1 ? "Win" : "Wins"}
+                <h2 style={{ fontFamily: 'Times New Roman', "textAlign": "center"}} >{this.state.x} {this.state.x === 1 ? "Win " : "Wins "}
                     {this.props.price ? '('+ (this.props.price * this.state.x).toFixed(2) + '€)' : ''}</h2>
             <Slider
                 axis="x"

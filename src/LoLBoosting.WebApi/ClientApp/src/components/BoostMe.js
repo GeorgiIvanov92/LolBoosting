@@ -9,7 +9,7 @@ export class BoostMe extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            orderType: OrderType.WinsBoost,
+            orderType: OrderType.WinsBoost
         }
     }
 
@@ -17,8 +17,8 @@ export class BoostMe extends Component {
 
         return (
             <div>
-
-                <Nav justify variant="pills" defaultActiveKey="winsSoloBoost">
+                <h1 style={{ fontFamily: 'Times New Roman', color: "brown", textAlign: 'center'}}>Boost Purchase</h1>
+                <Nav className="mt-5" justify variant="pills" defaultActiveKey="winsSoloBoost">
             <Nav.Item>
                         <Nav.Link onClick={() => this.setState({orderType: OrderType.WinsBoost })} eventKey="winsSoloBoost"> Wins Solo Boost</Nav.Link>
                 </Nav.Item>

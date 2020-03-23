@@ -15,7 +15,7 @@ export class GamesBoost extends Component {
     RenderSoloQueueGamesOrder() {
         return (
             <div>
-                <h2 style={{ "textAlign": "center" }}>{this.state.x} {this.state.x === 1 ? "Game" : "Games"}
+                <h2 style={{ fontFamily: 'Times New Roman', "textAlign": "center" }}>{this.state.x} {this.state.x === 1 ? "Game " : "Games "}
                     {this.props.price ? '(' + (this.props.price * this.state.x).toFixed(2) + '€)' : ''}</h2>
                 <Slider
                     axis="x"

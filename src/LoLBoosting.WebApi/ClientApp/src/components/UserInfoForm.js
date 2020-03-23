@@ -1,13 +1,21 @@
 ﻿import React, { Component } from 'react';
-import authService from './api-authorization/AuthorizeService'
-import { Col, Form, InputGroup, Button, Spinner } from 'react-bootstrap';
-import { Formik, Field, Feedback } from 'formik';
+import { Col, Form, Button, Spinner } from 'react-bootstrap';
+import { Formik } from 'formik';
 import * as yup from 'yup';
-import { WinsBoost } from "./OrderTypes/WinsBoost";
-import { OrderType } from "./Utilities/Enums";
 import { OrderSpecific } from "./OrderSpecific";
 import { Server } from "./Utilities/Enums";
 import { ValidationState } from "./Utilities/Enums";
+
+import iron from '../Images/Emblem_Iron.png';
+import bronze from '../Images/Emblem_Bronze.png';
+import silver from '../Images/Emblem_Silver.png';
+import gold from '../Images/Emblem_Gold.png';
+import platinum from '../Images/Emblem_Platinum.png';
+import diamond from '../Images/Emblem_Diamond.png';
+import Grandmaster from '../Images/Emblem_Grandmaster.png';
+import Challenger from '../Images/Emblem_Challenger.png';
+
+let renderedAccountInfo = <div></div>;
 
 export class UserInfoForm extends Component {
     static displayName = UserInfoForm.name;
@@ -27,13 +35,14 @@ export class UserInfoForm extends Component {
             selectedServer: Server.None,
             nickName: '',
             orderMetadata: [],
-            RiotApiGetUserUrl: 'order/CalculatePrice'
+            RiotApiGetUserUrl: 'order/CalculatePrice',
         };
 
         this.GenericForm = this.GenericForm.bind(this);
         this.CheckForValidation = this.CheckForValidation.bind(this);
         this.ValidateUser = this.ValidateUser.bind(this);
         this.RenderOrderSpecifics = this.RenderOrderSpecifics.bind(this);
+        this.MapTierToImage = this.MapTierToImage.bind(this);
     }
 
     RenderOrderSpecifics(orderType) {
@@ -142,9 +151,12 @@ export class UserInfoForm extends Component {
                                 </Form.Group>
                             </Form.Row>
                             <Form.Row className='mt-5'>
-                                <Button disabled={errors.server || errors.nickname} variant="dark" onClick={this.ValidateUser}>Calculate Price</Button>
+                                <Button style={{ width: "13%", height: "50%" }} disabled={errors.server || errors.nickname} variant="dark" onClick={this.ValidateUser}>Calculate Price</Button>
                                 {this.CheckForValidation()}
                             </Form.Row>
+                            <Form.Row className='mt-5'>
+                                {renderedAccountInfo}
+                                </Form.Row>
                             <Form.Row className='mt-5'>
                                 {this.RenderOrderSpecifics(this.props.orderType)}
                             </Form.Row>
@@ -165,6 +177,79 @@ export class UserInfoForm extends Component {
         );
     }
 
+    MapTierToImage() {
+        switch (this.state.orderMetadata.currentTier) {
+            case 1:
+                {
+                    renderedAccountInfo = <div>
+                        <h2 style={{ fontFamily: 'Times New Roman', color: "brown", textAlign: 'center' }}>
+                            Iron Division {this.state.orderMetadata.currentDivision} ({this.state.orderMetadata.currentPoints}LP)
+                            </h2>
+                        <img src={iron} style={{ height: '200px', width: '150px' }} />
+                    </div>
+
+                    return;
+                }
+            case 2:
+                {
+                    renderedAccountInfo = <div>
+                        <h2 style={{ fontFamily: 'Times New Roman', color: "brown", textAlign: 'center' }}>
+                            Bronze Division {this.state.orderMetadata.currentDivision} ({this.state.orderMetadata.currentPoints}LP)
+                            </h2>
+                        <img src={bronze} style={{ height: '200px', width: '150px' }} />
+                    </div>
+
+                    return;
+                }
+            case 3:
+                {
+                    renderedAccountInfo = <div>
+                        <h2 style={{ fontFamily: 'Times New Roman', color: "brown", textAlign: 'center' }}>
+                            Silver Division {this.state.orderMetadata.currentDivision} ({this.state.orderMetadata.currentPoints}LP)
+                            </h2>
+                        <img src={silver} style={{ height: '200px', width: '150px' }} />
+                    </div>
+
+                    return;
+                }
+            case 4:
+                {
+                    renderedAccountInfo = <div>
+                        <h2 style={{ fontFamily: 'Times New Roman', color: "brown", textAlign: 'center' }}>
+                            Gold Division {this.state.orderMetadata.currentDivision} ({this.state.orderMetadata.currentPoints}LP)
+                            </h2>
+                        <img src={gold} style={{ height: '200px', width: '150px' }} />
+                    </div>
+
+                    return;
+                }
+            case 5:
+                {
+                    renderedAccountInfo = <div>
+                        <h2 style={{ fontFamily: 'Times New Roman', color: "brown", textAlign: 'center' }}>
+                            Platinum Division {this.state.orderMetadata.currentDivision} ({this.state.orderMetadata.currentPoints}LP)
+                            </h2>
+                        <img src={platinum} style={{ height: '200px', width: '150px' }} />
+                    </div>
+
+                    return;
+                }
+            case 6:
+                {
+                    renderedAccountInfo = <div>
+                        <h2 style={{ fontFamily: 'Times New Roman', color: "brown", textAlign: 'center' }}>
+                            Diamond Division {this.state.orderMetadata.currentDivision} ({this.state.orderMetadata.currentPoints}LP)
+                            </h2>
+                        <img src={diamond} style={{ height: '200px', width: '150px' }} />
+                    </div>
+
+                    return;
+                }
+
+            default:
+        }
+    }
+
     CheckForValidation() {
         switch (this.state.currentValidationState) {
         case ValidationState.NotStarted:
@@ -173,10 +258,11 @@ export class UserInfoForm extends Component {
             return <Spinner margin="sm" animation="border" role="status">
                     <span className="sr-only">Loading...</span>
                 </Spinner>
-        case ValidationState.Confirmed:
-            return <div></div>
+            case ValidationState.Confirmed:
+                return this.MapTierToImage();
         case ValidationState.Rejected:
-            return <h2> No such account found!</h2>
+                return <h2> No such account found!</h2>
+            default: return <div></div>
         }
     }
 
