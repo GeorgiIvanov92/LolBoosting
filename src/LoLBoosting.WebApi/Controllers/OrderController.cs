@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -239,15 +240,20 @@ namespace LoLBoosting.WebApi.Controllers
 
         public class OrderInfoIn
         {
+            [Required]
             public string Username { get; set; }
+            [Required]
             public EServer Server { get; set; }
+            [Required]
             public EOrderType OrderType { get; set; }
         }
         public class OrderMetadataOut
         {
+            [Range(0.1,Double.MaxValue)]
             public double Price { get; set; }
             public ETier CurrentTier { get; set; }
             public EDivision CurrentDivision { get; set; }
+            [Range(0,100)]
             public double CurrentPoints { get; set; }
         }
     }
