@@ -241,6 +241,7 @@ namespace LoLBoosting.WebApi.Controllers
         public class OrderInfoIn
         {
             [Required]
+            [StringLength(50)]
             public string Username { get; set; }
             [Required]
             public EServer Server { get; set; }
@@ -249,7 +250,7 @@ namespace LoLBoosting.WebApi.Controllers
         }
         public class OrderMetadataOut
         {
-            [Range(0.1,Double.MaxValue)]
+            [Range(0,Double.MaxValue)]
             public double Price { get; set; }
             public ETier CurrentTier { get; set; }
             public EDivision CurrentDivision { get; set; }
