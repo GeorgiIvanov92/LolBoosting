@@ -14,10 +14,9 @@ export class BoostMe extends Component {
     }
 
     render() {
-
         return (
             <div>
-                <h1 style={{ fontFamily: 'Times New Roman', color: "brown", textAlign: 'center'}}>Boost Purchase</h1>
+                <h1 style={{ fontFamily: 'Times New Roman', color: "brown", textAlign: 'center' }}>Boost Purchase</h1>
                 <Nav className="mt-5" justify variant="pills" defaultActiveKey="winsSoloBoost">
             <Nav.Item>
                         <Nav.Link onClick={() => this.setState({orderType: OrderType.WinsBoost })} eventKey="winsSoloBoost"> Wins Solo Boost</Nav.Link>

@@ -54,7 +54,7 @@ export class UserInfoForm extends Component {
 
     GenericForm() {
         return (
-            <Formik
+            <Formik 
                 validationSchema={this.state.schema}
                 onSubmit={console.log}
                 isInvalid={<div>Required!</div>}
@@ -140,7 +140,7 @@ export class UserInfoForm extends Component {
                                         <option value="" label="Select a server" />
                                         <option value="EUW" label="EUW" />
                                         <option value="EUNE" label="EUNE" />
-                                        <option value="NA" label="NA" />
+0                                        <option value="NA" label="NA" />
                                     </select>
                                     {errors.server &&
                                         <div style={{ color: 'red' }} className="input-feedback">
@@ -163,7 +163,7 @@ export class UserInfoForm extends Component {
                             <Button className='mt-5' disabled={this.state.currentValidationState !== ValidationState.Confirmed} type="submit">Proceed to Payment</Button>
                         </Form>
                     )}
-            </Formik>
+                </Formik>
         );
     }
 

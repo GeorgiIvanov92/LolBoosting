@@ -22,8 +22,8 @@ export class NavMenu extends Component {
     });
   }
 
-  render () {
-    return (
+    render() {
+        return (
       <header>
             <Navbar color="dark" className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3">
           <Container>
@@ -32,10 +32,10 @@ export class NavMenu extends Component {
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                  <NavLink tag={Link} className="text" to="/">Home</NavLink>
+                <NavLink tag={Link} onClick={() => this.props.addClass('')} className="text" to="/">Home</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink tag={Link} className="text" to="/boostme">Boost Me</NavLink>
+                <NavLink tag={Link} onClick={() => this.props.addClass('background-mountain')} className="text" to="/boostme">Boost Me</NavLink>
                 </NavItem>
                 <LoginMenu>
                 </LoginMenu>
