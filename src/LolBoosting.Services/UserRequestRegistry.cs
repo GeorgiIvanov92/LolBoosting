@@ -10,7 +10,7 @@ namespace LolBoosting.Services
     {
         private const int MaxRequestCountInShortPeriod = 10;
         private readonly TimeSpan _shortPeriod = TimeSpan.FromSeconds(10);
-        private ConcurrentDictionary<string, UserRequestInfo> _userRequests = new ConcurrentDictionary<string, UserRequestInfo>();
+        private readonly ConcurrentDictionary<string, UserRequestInfo> _userRequests = new ConcurrentDictionary<string, UserRequestInfo>();
 
         public UserRequestRegistry()
         {

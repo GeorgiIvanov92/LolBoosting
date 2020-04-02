@@ -17,6 +17,7 @@ using LoLBoosting.Contracts.Orders;
 using LoLBoosting.Entities;
 using LolBoosting.Services;
 using LoLBoosting.WebApi.Filters;
+using LoLBoosting.WebApi.ViewModels.Orders;
 
 namespace LoLBoosting.WebApi.Controllers
 {
@@ -30,7 +31,7 @@ namespace LoLBoosting.WebApi.Controllers
         private readonly MultiplyCalculator _multiplyCalculator;
         private const string RankedSoloQueue = "RANKED_SOLO_5x5";
         private readonly IRepository<TierRate> _tierRateRepository;
-        private readonly UserRequestRegistry _userRequestRegistry;
+        private readonly UserOrderRegistry _userOrderRegistry;
         private readonly List<ETier> _foribiddenTiers = new List<ETier>
         {
             ETier.Challenger,
@@ -42,14 +43,14 @@ namespace LoLBoosting.WebApi.Controllers
             UserManager<User> userManager,
             RiotApiClient riotApiClient,
             MultiplyCalculator multiplyCalculator,
-            UserRequestRegistry userRequestRegistry)
+            UserOrderRegistry userOrderRegistry)
         {
             _orderRepository = orderRepositpory;
             _userManager = userManager;
             _riotApiClient = riotApiClient;
             _multiplyCalculator = multiplyCalculator;
             _tierRateRepository = tierRateRepository;
-            _userRequestRegistry = userRequestRegistry;
+            _userOrderRegistry = userOrderRegistry;
         }
 
         /// <summary>
@@ -119,75 +120,83 @@ namespace LoLBoosting.WebApi.Controllers
         [HttpPost]
         [ServiceFilter(typeof(AntiRequestSpamFilter))]
         [Route("CalculatePrice")]
-        [Authorize(Roles = "Client,Administrator")]
         [ProducesResponseType(typeof(OrderMetadataOut), (int)HttpStatusCode.OK)]
         [ProducesResponseType((int)HttpStatusCode.BadRequest)]
         public async Task<ActionResult<OrderMetadataOut>> CalculatePrice([FromBody] OrderInfoIn orderInfo)
         {
             if (ModelState.IsValid)
             {
-                try
+                var orderMetadata = GetOrderMetadata(orderInfo);
+
+                if(orderMetadata != null)
                 {
-                    var summoner =
-                        await _riotApiClient.GetSummonerDetailsAsync(orderInfo.Username, orderInfo.Server);
-
-                    var summonerLeagues = await _riotApiClient.GetLeagueDetailsAsync(summoner);
-
-                    var soloQueueLeague = summonerLeagues?.FirstOrDefault(l =>
-                        l.QueueType.Equals(RankedSoloQueue, StringComparison.InvariantCultureIgnoreCase));
-
-                    if (soloQueueLeague != null)
-                    {
-                        Enum.TryParse(soloQueueLeague.Tier, true, out ETier tier);
-                        Enum.TryParse(soloQueueLeague.Rank, true, out EDivision division);
-
-                        if (_foribiddenTiers.Contains(tier))
-                        {
-                            return BadRequest("Forbidden Tier!");
-                        }
-
-                        var multiplier =
-                            _multiplyCalculator.GetMultiplier(division, soloQueueLeague.LeaguePoints, orderInfo.OrderType);
-                        var rate = _tierRateRepository.Find(tier);
-
-                        var price = multiplier * rate.Price;
-
-                        return Ok(new OrderMetadataOut
-                        {
-                            CurrentDivision = division,
-                            CurrentPoints = soloQueueLeague.LeaguePoints,
-                            CurrentTier = tier,
-                            Price = price
-                        });
-                    }
-                    else if (summoner != null)
-                    {
-                        //TODO: get last season tier and division
-
-                        //var multiplier =
-                        //    _multiplyCalculator.GetMultiplier(EDivision.Undefined, soloQueueLeague.LeaguePoints, orderType);
-                        //var rate = _tierRateRepository.Find(ETier.Unranked);
-
-                        //var price = multiplier * rate.Price;
-
-                        //return Ok(new OrderMetadataOut
-                        //{
-                        //    CurrentDivision = EDivision.Undefined,
-                        //    CurrentPoints = soloQueueLeague.LeaguePoints,
-                        //    CurrentTier = ETier.Unranked,
-                        //    Price = price
-                        //});
-                    }
-                }
-                catch(Exception ex)
-                {
-                    
+                    return Ok(orderMetadata);
                 }
             }
 
-            return BadRequest("No such user found!");
+            return BadRequest("No such user found or Division is not eligable for boosting");
         }
 
+        [HttpPost]
+        [Route("ProceedToPayment")]
+        [ProducesResponseType((int) HttpStatusCode.Redirect)]
+        [ProducesResponseType((int) HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> ProceedToPayment(OrderInfoIn orderInfo)
+        {
+            try
+            {
+                if (!this.User.Claims.Any())
+                {
+                    _userOrderRegistry.RegisterGuestOrder(this.HttpContext.Connection.RemoteIpAddress.ToString(), orderInfo);
+                }
+                else
+                {
+                    _userOrderRegistry.RegisterUserOrder(this.User.Claims.FirstOrDefault(z => z.Type == "sub").Value, orderInfo);
+                }
+
+                return Ok();
+            }
+            catch(Exception ex)
+            {
+               
+            }
+
+            return BadRequest();
+        }
+
+        [HttpGet]
+        [Route("GetUserOrder")]
+        [ProducesResponseType((int) HttpStatusCode.OK)]
+        [ProducesResponseType((int)HttpStatusCode.NoContent)]
+        public async Task<ActionResult<OrderMetadataOut>> GetUserOrder()
+        {
+            try
+            {
+                var userOrder = _userOrderRegistry.GetUserOrder(this.User.Claims.FirstOrDefault(z => z.Type == "sub").Value);
+
+                if(userOrder == null)
+                {
+                    userOrder = _userOrderRegistry.GetGuestOrder(this.HttpContext.Connection.RemoteIpAddress.ToString());
+                }
+
+                if(userOrder == null)
+                {
+                    return NoContent();
+                }
+
+                var orderMetadata = GetOrderMetadata(userOrder);
+
+                orderMetadata.Price *= userOrder.NumberOfGames;
+
+                return Ok(orderMetadata);
+            }
+            catch(Exception ex)
+            {
+                
+            }
+
+            return NoContent();
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -224,6 +233,43 @@ namespace LoLBoosting.WebApi.Controllers
             return BadRequest("Sorry. Order cannot be assigned.");
         }
 
+        private  OrderMetadataOut GetOrderMetadata(OrderInfoIn orderInfo)
+        { 
+            var summoner = _riotApiClient.GetSummonerDetailsAsync(orderInfo.Username, orderInfo.Server).Result;
+
+            var summonerLeagues = _riotApiClient.GetLeagueDetailsAsync(summoner).Result;
+
+            var soloQueueLeague = summonerLeagues?.FirstOrDefault(l =>
+                l.QueueType.Equals(RankedSoloQueue, StringComparison.InvariantCultureIgnoreCase));
+
+            if (soloQueueLeague != null)
+            {
+                Enum.TryParse(soloQueueLeague.Tier, true, out ETier tier);
+                Enum.TryParse(soloQueueLeague.Rank, true, out EDivision division);
+
+                if (_foribiddenTiers.Contains(tier))
+                {
+                    return null;
+                }
+
+                var multiplier =
+                    _multiplyCalculator.GetMultiplier(division, soloQueueLeague.LeaguePoints, orderInfo.OrderType);
+                var rate = _tierRateRepository.Find(tier);
+
+                var price = multiplier * rate.Price;
+
+                return new OrderMetadataOut
+                {
+                    CurrentDivision = division,
+                    CurrentPoints = soloQueueLeague.LeaguePoints,
+                    CurrentTier = tier,
+                    Price = price
+                };
+            }
+
+            return null;
+        }
+
         public class OrderIn
         {
             public string AccountUsername { get; set; }
@@ -236,26 +282,6 @@ namespace LoLBoosting.WebApi.Controllers
             public string ClientId { get; set; }
             public string AccountUsername { get; set; }
             public string AccountPassword { get; set; }
-        }
-
-        public class OrderInfoIn
-        {
-            [Required]
-            [StringLength(50)]
-            public string Username { get; set; }
-            [Required]
-            public EServer Server { get; set; }
-            [Required]
-            public EOrderType OrderType { get; set; }
-        }
-        public class OrderMetadataOut
-        {
-            [Range(0,Double.MaxValue)]
-            public double Price { get; set; }
-            public ETier CurrentTier { get; set; }
-            public EDivision CurrentDivision { get; set; }
-            [Range(0,100)]
-            public double CurrentPoints { get; set; }
         }
     }
 }

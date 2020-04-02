@@ -6,6 +6,7 @@ import AuthorizeRoute from './components/api-authorization/AuthorizeRoute';
 import ApiAuthorizationRoutes from './components/api-authorization/ApiAuthorizationRoutes';
 import { ApplicationPaths } from './components/api-authorization/ApiAuthorizationConstants';
 import { BoostMe } from './components/BoostMe';
+import { FinalizeOrder } from "./components/FinalizeOrder";
 import "./components/Backgrounds.css";
 
 export default class App extends Component {
@@ -27,6 +28,7 @@ export default class App extends Component {
                 <Layout addClass={this.addClass}>
                     <Route exact path='/'  component={Home} />
                     <Route path='/boostme' component={BoostMe} />
+                    <AuthorizeRoute path='/finalizeOrder' component={FinalizeOrder} />
                     <Route path={ApplicationPaths.ApiAuthorizationPrefix} component={ApiAuthorizationRoutes} />
                 </Layout>
             </div>

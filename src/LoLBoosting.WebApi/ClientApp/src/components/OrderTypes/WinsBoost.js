@@ -18,12 +18,17 @@ export class WinsBoost extends Component {
                 <h2 style={{ fontFamily: 'Times New Roman', "textAlign": "center"}} >{this.state.x} {this.state.x === 1 ? "Win " : "Wins "}
                     {this.props.price ? '('+ (this.props.price * this.state.x).toFixed(2) + '€)' : ''}</h2>
             <Slider
-                axis="x"
-                xstep={1}
-                xmin={1}
-                xmax={15}
-                x={this.state.x}
-                onChange={({ x }) => this.setState({ x: parseInt(x) })}
+                    axis="x"
+                    xstep={1}
+                    xmin={1}
+                    xmax={15}
+                    x={this.state.x}
+                    onChange={({ x }) => {
+                        this.setState({ x: parseInt(x) });
+                        if (this.props.SetNumberOfGames) {
+                            this.props.SetNumberOfGames(x);
+                        }
+                    }}
                 />
                 </div>
         );

@@ -15,6 +15,8 @@ namespace LolBoosting.WebApi.Infrastructure.Extensions.ServiceCollection
 
             services.AddSingleton<UserRequestRegistry>();
 
+            services.AddSingleton<UserOrderRegistry>();
+
             services.AddScoped<AntiRequestSpamFilter>();
 
             return services;

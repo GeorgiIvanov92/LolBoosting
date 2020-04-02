@@ -23,7 +23,10 @@ export class GamesBoost extends Component {
                     xmin={1}
                     xmax={15}
                     x={this.state.x}
-                    onChange={({ x }) => this.setState({ x: parseInt(x) })}
+                    onChange={({ x }) => {
+                        this.setState({ x: parseInt(x) });
+                        this.props.SetNumberOfGames(x);
+                    }}
                 />
             </div>
         );

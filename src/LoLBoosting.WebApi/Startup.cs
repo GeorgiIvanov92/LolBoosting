@@ -43,7 +43,11 @@ namespace LolBoosting.WebApi
             services.AddHttpClient<RiotApiClient>()
                 .AddPolicyHandler(GetRetryPolicy());
 
-            services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+            services.AddDefaultIdentity<User>(options =>
+                {
+                    options.SignIn.RequireConfirmedEmail = false;
+                    options.SignIn.RequireConfirmedAccount = true;
+                })
                 .AddRoles<IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<LolBoostingDbContext>();

@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\LoLBoosting.Contracts\LoLBoosting.Contracts.csproj" />
+    <ProjectReference Include="..\LoLBoostring.WebApi.ViewModels\LoLBoostring.WebApi.ViewModels.csproj" />
   </ItemGroup>
 
 </Project>

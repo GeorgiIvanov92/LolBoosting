@@ -36,6 +36,9 @@ export class UserInfoForm extends Component {
             nickName: '',
             orderMetadata: [],
             RiotApiGetUserUrl: 'order/CalculatePrice',
+            numberOfGames: 10,
+            desiredTier: 0,
+            desiredDivision: 0,
         };
 
         this.GenericForm = this.GenericForm.bind(this);
@@ -43,13 +46,19 @@ export class UserInfoForm extends Component {
         this.ValidateUser = this.ValidateUser.bind(this);
         this.RenderOrderSpecifics = this.RenderOrderSpecifics.bind(this);
         this.MapTierToImage = this.MapTierToImage.bind(this);
+        this.proceedToPayment = this.proceedToPayment.bind(this);
+        this.SetNumberOfGames = this.SetNumberOfGames.bind(this);
     }
 
     RenderOrderSpecifics(orderType) {
         if (this.state.currentValidationState !== ValidationState.Confirmed) {
-            return <OrderSpecific orderType={orderType} />
+            return <OrderSpecific SetNumberOfGames={this.SetNumberOfGames} orderType={orderType}/>
         }
-        return <OrderSpecific price={this.state.orderMetadata.price} orderType={orderType} />
+        return <OrderSpecific SetNumberOfGames={this.SetNumberOfGames} price={this.state.orderMetadata.price} orderType={orderType} />
+    }
+
+    SetNumberOfGames(numberOfGames) {
+        this.setState({ numberOfGames: numberOfGames });
     }
 
     GenericForm() {
@@ -72,40 +81,6 @@ export class UserInfoForm extends Component {
 
                 }) => (
                         <Form noValidate onSubmit={handleSubmit}>
-                            <Form.Row>
-                                <Form.Group as={Col} md="4" controlId="validationFormik01">
-                                    <Form.Label>Riot Account Username</Form.Label>
-                                    <Form.Control
-                                        required
-                                        type="text"
-                                        name="username"
-                                        value={values.firstName}
-                                        onChange={handleChange}
-                                        isValid={touched.username && !errors.username}
-                                        isInvalid={errors.username}
-                                    />
-                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.username}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-                                <Form.Group as={Col} md="4" controlId="validationFormik02">
-                                    <Form.Label>Riot Account Password</Form.Label>
-                                    <Form.Control
-                                        type="password"
-                                        name="password"
-                                        onChange={handleChange}
-                                        isValid={touched.password && !errors.password}
-                                        isInvalid={!!errors.password}
-                                    />
-
-                                    <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                    <Form.Control.Feedback type="invalid">
-                                        {errors.password}
-                                    </Form.Control.Feedback>
-                                </Form.Group>
-
-                            </Form.Row>
                             <Form.Row>
                                 <Form.Group as={Col} md="4" controlId="validationFormik03">
                                     <Form.Label>InGame Username</Form.Label>
@@ -160,11 +135,29 @@ export class UserInfoForm extends Component {
                             <Form.Row className='mt-5'>
                                 {this.RenderOrderSpecifics(this.props.orderType)}
                             </Form.Row>
-                            <Button className='mt-5' disabled={this.state.currentValidationState !== ValidationState.Confirmed} type="submit">Proceed to Payment</Button>
+                            <Button onClick={() => this.proceedToPayment()} className='mt-5' disabled={this.state.currentValidationState !== ValidationState.Confirmed} type="submit">Proceed to Payment</Button>
                         </Form>
                     )}
                 </Formik>
         );
+    }
+
+    async proceedToPayment() {
+        const response = await fetch('order/ProceedToPayment',
+            {
+                method: 'post',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    "username": this.state.nickName,
+                    "server": this.state.currentServer,
+                    "orderType": this.props.orderType,
+                    "numberOfGames": this.state.numberOfGames,
+                    "desiredTier": this.state.desiredTier,
+                    "desiredDivision": this.state.desiredTier,
+                })
+            });
+
+        window.location.href = '/finalizeOrder';
     }
 
     render() {
@@ -281,7 +274,10 @@ export class UserInfoForm extends Component {
             body: JSON.stringify({
                 "username": this.state.nickName,
                 "server": this.state.currentServer,
-                "orderType": this.props.orderType
+                "orderType": this.props.orderType,
+                "numberOfGames": 0,
+                "desiredTier": 0,
+                "desiredDivision": 0
             })
         }).then(response => response.json());
 

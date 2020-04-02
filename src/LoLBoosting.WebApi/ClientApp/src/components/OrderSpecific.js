@@ -17,10 +17,10 @@ export class OrderSpecific extends Component {
 
     RenderOrderSpecifics(orderType) {
         if (orderType === OrderType.WinsBoost) {
-            return <WinsBoost price={this.props.price} />
+            return <WinsBoost SetNumberOfGames={this.props.SetNumberOfGames} price={this.props.price} />
         }
         if (orderType === OrderType.GamesBoost) {
-            return <GamesBoost price={this.props.price}/>
+            return <GamesBoost SetNumberOfGames={this.props.SetNumberOfGames} price={this.props.price}/>
         }
 
         return <div></div>
